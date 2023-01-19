@@ -1,0 +1,43 @@
+[] Models
+    [] LinkType
+        -id [auto increment]
+        -type [char]
+    [] LinkInfo
+        -id [auto increment]
+        -name [char] 
+        -linkTypeId [foreign key -> LinkType ]
+        -parentId [foreign key -> LinkInfo/self]
+        -Title [char]
+        -headerImage [image/file]
+        -isEnabled [bool]
+        -content [textarea]
+        -externalUrl [url]
+        -useExternalUrl [bool]
+        -openInExternalWindow [bool]
+        -sortOrderId [int]
+
+
+[] API's
+    [] LinkType Api's
+        [] Get 
+        [] Create 
+        [] Update
+        [] Delete
+
+    [] LinkInfo Apis's
+        [] Get
+        [] Create
+        [] Update
+        [] Delete
+
+    [] Listing Api's
+        [] Get all LinkTypes
+        [] Get all links [LinkInfo]
+            [] Filter by parentId, isEnabled
+            [] Order by sortOrderId
+        
+ 
+
+
+
+
