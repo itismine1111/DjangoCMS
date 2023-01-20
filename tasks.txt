@@ -18,20 +18,20 @@
 
 
 [] API's
-    [] LinkType Api's
-        [] Get 
-        [] Create 
-        [] Update
-        [] Delete
+    [-] LinkType Api's
+        [-] Get 
+        [-] Create 
+        [-] Update
+        [-] Delete
 
-    [] LinkInfo Apis's
-        [] Get
-        [] Create
-        [] Update
-        [] Delete
+    [-] LinkInfo Apis's
+        [-] Get
+        [-] Create
+        [-] Update
+        [-] Delete
 
     [] Listing Api's
-        [] Get all LinkTypes
+        [-] Get all LinkTypes
         [] Get all links [LinkInfo]
             [] Filter by parentId, isEnabled
             [] Order by sortOrderId
