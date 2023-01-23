@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     # My Apps
     "app_accounts",
     "app_cms",
+    "app_frontend",
+    "app_frontend_admin",
     # django-cleanup needs to stay at bottom (3rd Party)
     'django_cleanup.apps.CleanupConfig',
 ]
