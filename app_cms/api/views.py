@@ -4,6 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 from rest_framework.decorators import api_view
+from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend 
 from app_cms.models import LinkInfo, LinkType
 from .serializers import LinkInfoSerializer, LinkTypeSerializer
@@ -201,11 +202,8 @@ class LinkInfoApi(APIView):
         )
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         serializer = LinkInfoSerializer(data=request.data)
-        print(serializer.is_valid())
         if serializer.is_valid():
-            print("serializer is valid")
             serializer.save()
             return Response(
                 {
@@ -305,7 +303,7 @@ def updateLinkInfo(request, id):
             return Response(
                 {
                     "success": True,
-                    "message": "Link Info UPDATE request unsuccessful. Error while updating fields.",
+                    "message": "Link Info UPDATE request successful.",
                     "data": {},
                 },
                 status=status.HTTP_200_OK,
@@ -383,6 +381,8 @@ class ListLinkInfoApi(APIView):
 
 class ListLinkInfoApiFilters(ListAPIView):
     permission_classes = [AllowAny]
+    serializer_class = LinkInfoSerializer
     queryset = LinkInfo.objects.all()
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_class = LinkInfoFilter
+    ordering_fields = ['sortOrderId']
