@@ -1,0 +1,43 @@
+{% extends 'app_frontend_admin/admin_base.html' %}
+{% load static %}
+
+{% block linktypeclass %}active{% endblock linktypeclass %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-9"><h3>List Link Type</h3></div>
+    <div class="col-3 d-flex flex-row-reverse"><a class="btn btn-primary" href="{% url 'add-link-type' %}">Add Link Type</a></div>
+</div>
+<hr>
+
+<table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+      <tr>
+        <th scope="row">1</th>
+        <td>Home</td>
+        <td>
+            <button type="button" class="btn btn-outline-secondary">
+                <i class="bi bi-pen"></i>
+            </button>
+            <button type="button" class="btn btn-outline-secondary">
+                <i class="bi bi-trash"></i>
+            </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+{% endblock content %}
+
+{% block scripts %}
+  <script src="{% static 'app_frontend_admin/js/list_link_type.js' %}"></script>
+{% endblock scripts %}

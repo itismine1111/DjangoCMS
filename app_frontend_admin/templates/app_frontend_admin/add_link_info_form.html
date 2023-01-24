@@ -1,0 +1,96 @@
+{% extends 'app_frontend_admin/admin_base.html' %}
+{% load static %}
+
+{% block linkinfoclass %}active{% endblock linkinfoclass %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-9"><h3>Link Info Form</h3></div>
+    <div class="col-3 d-flex flex-row-reverse"><a class="btn btn-primary" href="{% url 'list-link-info' %}">Link Info List</a></div>
+</div>
+<hr>
+
+<form>
+    <!-- name -->
+    <div class="mb-3">
+      <label for="nameInputField" class="form-label">Name</label>
+      <input type="text" name="name" class="form-control" id="nameInputField" aria-describedby="nameHelp">
+    </div>
+
+    <!-- url -->
+    <div class="mb-3">
+        <label for="urlInputField" class="form-label">Url</label>
+        <input type="url" name="url" class="form-control" id="urlInputField" aria-describedby="urlHelp">
+    </div>
+
+    <!-- linkTypeId -->
+    <div class="mb-3">
+        <label for="linkTypeIdSelect" class="form-label">Select Link Type</label>
+        <select name="linkTypeId" class="form-select" aria-label="Default select example" id="linkTypeIdSelect">
+            <option selected>Select..</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+    </div>
+
+    <!-- parentId -->
+    <div class="mb-3">
+        <label for="parentIdSelect" class="form-label">Select Parent Link</label>
+        <select name="parentId" class="form-select" aria-label="Default select example" id="parentIdSelect">
+            <option selected>Select..</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+    </div>
+      
+    <!-- title -->
+    <div class="mb-3">
+        <label for="titleInputField" class="form-label">Title</label>
+        <input type="text" name="title" class="form-control" id="titleInputField" aria-describedby="titleHelp">
+    </div>
+
+    <!-- useExternalUrl -->
+    <div class="mb-3 form-check">
+        <input name="useExternalUrl" type="checkbox" class="form-check-input" id="useExternalUrlCheckbox">
+        <label class="form-check-label" for="useExternalUrlCheckbox">Use External Url</label>
+    </div>
+
+    <!-- externalUrl -->
+    <div class="mb-3">
+        <label for="externalUrlInputField" class="form-label">External Url</label>
+        <input type="url" name="externalUrl" class="form-control" id="externalUrlInputField" aria-describedby="externalUrlHelp">
+    </div>
+
+    <!-- openInExternalWindow -->
+    <div class="mb-3 form-check">
+        <input name="openInExternalWindow" type="checkbox" class="form-check-input" id="openInExternalWindowCheckbox">
+        <label class="form-check-label" for="openInExternalWindowCheckbox">Open In External Window</label>
+    </div>
+
+    <!-- sortOrderId -->
+    <div class="mb-3">
+        <label for="sortOrderIdInputField" class="form-label">Sort Order Id</label>
+        <input name="sortOrderId" type="number" name="sortOrderId" class="form-control" id="sortOrderIdInputField" aria-describedby="sortOrderIdHelp">
+    </div>
+
+    <!-- headerImage -->
+    <div class="mb-3">
+        <label for="headerImageFile" class="form-label">Header Image</label>
+        <input name="headerImage" class="form-control" type="file" id="headerImageFile">
+    </div>
+
+    <!-- content -->
+    <div class="mb-3">
+        <label for="contentTextarea" class="form-label">Content</label>
+        <textarea name="content" class="form-control" id="contentTextarea" rows="3" ></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+  
+
+{% endblock content %}

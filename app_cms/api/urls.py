@@ -10,11 +10,11 @@ from .views import (
 )
 
 urlpatterns = [
-    path("linktype/", LinkTypeApi.as_view(), name="linkType"),
-    path("linktype/<int:id>/", updateLinkType, name="updateLinkType"),
-    path("linkinfo/", LinkInfoApi.as_view(), name="linkInfo"),
-    path("linkinfo/<int:id>/", updateLinkInfo, name="updateLinkInfo"),
-    path("linktype/list/", ListLinkTypeApi.as_view(), name="listLinkType"),
-    path("linkinfo/list/", ListLinkInfoApi.as_view(), name="listLinkInfo"),
-    path("linkinfo/list/filters/", ListLinkInfoApiFilters.as_view(), name="listLinkInfoFilters"),
+    path("linktype/", LinkTypeApi.as_view(), name="api-linkType"),
+    path("linktype/<int:id>/", updateLinkType, name="api-updateLinkType"),
+    path("linkinfo/", LinkInfoApi.as_view(), name="api-linkInfo"),
+    path("linkinfo/<int:id>/", updateLinkInfo, name="api-updateLinkInfo"),
+    path("linktype/list/", ListLinkTypeApi.as_view(), name="api-listLinkType"),
+    path("linkinfo/list/", ListLinkInfoApi.as_view(), name="api-listLinkInfo"),
+    path("linkinfo/list/filters/", ListLinkInfoApiFilters.as_view(), name="api-listLinkInfoFilters"),
 ]
