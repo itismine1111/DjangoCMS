@@ -1,11 +1,18 @@
 $(document).ready(function () {
 
-    createTable();
+    createTable(url=API_BASE_URL_ADMIN + "linkinfo/list/");
+
+    fillFilterByTypeList();
+
+    $( "#table-body" ).sortable({
+        handle: '.handle',
+        cursor: 'move'
+    });
    
-    function createTable(){
+    function createTable(url){
         $.ajax({
             type: "GET",
-            url: API_BASE_URL_ADMIN + "linkinfo/list/",
+            url: url,
             processData: false,
             success: function (response){
                 // console.log(response["data"])
@@ -13,6 +20,11 @@ $(document).ready(function () {
                 document.getElementById("table-body").innerHTML = "";
                 for(let i=0; i<response["data"].length; i++){
                     var tr = document.createElement("tr");
+
+                    var td_handle = document.createElement("td")
+                    td_handle.innerHTML = '<i class="bi bi-list handle" style="font-size:24px;"></i>';
+                    td_handle.style.width = "5%";
+                    td_handle.style.paddingBottom = "5px";
     
                     var th_sno = document.createElement("th");
                     th_sno.setAttribute("scope", "row");
@@ -70,7 +82,8 @@ $(document).ready(function () {
     
                     td_actions.appendChild(del_btn);
                     td_actions.appendChild(edit_btn);
-    
+                    
+                    tr.appendChild(td_handle);
                     tr.appendChild(th_sno);
                     tr.appendChild(td_name);
                     tr.appendChild(td_linkType);
@@ -116,15 +129,15 @@ $(document).ready(function () {
                         processData: false,
                         success: function(response){
                             console.log(response);
-                            iziToast.success({
-                                timeout: 2000, 
-                                icon: 'bi bi-trash2-fill', 
-                                title: 'OK', 
-                                message: 'Link Info successfully deleted.'
-                            });
-                        }
+                            showToast("success", 'Error encountered while deleting Link Info');
+                        },
+                        error: function(response){
+                            showToast("error", 'Error encountered while deleting Link Info');
+                        },
+                        
                     })
                 }
+
             });
         })
     }
@@ -132,17 +145,57 @@ $(document).ready(function () {
 
     function addEditBtnEventListener(edit_btn, record_id){
         edit_btn.addEventListener("click", (event)=>{
-            iziToast.show({
-                title: 'Hey',
-                message: 'What would you like to add?',
-                posotion: 'topRight',
-                theme: 'light', // dark
-                color: 'green', // blue, red, green, yellow
-
-            });
+            showToast("success", 'Clicked edit button');   
         })
         
     }
+
+    function fillFilterByTypeList(){
+        $.ajax({
+            type: "GET",
+            url: API_BASE_URL_ADMIN + "linktype/list/",
+            processData: false,
+            success: function (response){
+                console.log(response["data"])
+                var filterSelectbox = document.getElementById("filter-selectbox");
+                filterSelectbox.innerHTML = "";
+
+                var option = document.createElement("option");
+                option.setAttribute("value", 0);
+                option.setAttribute("selected", 'selected');
+                option.innerHTML = "<strong>Filter by type..</strong>";
+
+                filterSelectbox.appendChild(option);
+
+                for(let i=0; i<response["data"].length; i++){
+                    var option = document.createElement("option");
+                    option.setAttribute("value", response["data"][i]["id"]);
+                    option.innerHTML = response["data"][i]["linkType"]
+                    filterSelectbox.appendChild(option); 
+                }
+            },
+    
+            error: function(response){
+                console.log("ERROR saving new list type");
+                console.error(response)
+            }
+        })
+    }
+
+
+    // onChange() Filter By list type selectbox
+    var filterSelectbox = document.getElementById("filter-selectbox");
+    filterSelectbox.addEventListener("change", (event)=>{
+        let selectedValue = $("#filter-selectbox option:selected").val();
+        if (selectedValue === 0){
+            var newURL = API_BASE_URL_ADMIN + "linkinfo/list/";
+        }
+        else{
+            var newURL = API_BASE_URL_ADMIN + "linkinfo/list/?linkTypeId="+selectedValue;
+        }
+        createTable(newURL);
+    })
+
 
 });
 

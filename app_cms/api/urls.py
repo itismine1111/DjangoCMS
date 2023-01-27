@@ -15,6 +15,6 @@ urlpatterns = [
     path("linkinfo/", LinkInfoApi.as_view(), name="api-linkInfo"),
     path("linkinfo/<int:id>/", updateLinkInfo, name="api-updateLinkInfo"),
     path("linktype/list/", ListLinkTypeApi.as_view(), name="api-listLinkType"),
-    path("linkinfo/list/", ListLinkInfoApi.as_view(), name="api-listLinkInfo"),
-    path("linkinfo/list/filters/", ListLinkInfoApiFilters.as_view(), name="api-listLinkInfoFilters"),
+    path("linkinfo/list/filters", ListLinkInfoApi.as_view(), name="api-listLinkInfo"),
+    path("linkinfo/list/", ListLinkInfoApiFilters.as_view(), name="api-listLinkInfoFilters"),
 ]

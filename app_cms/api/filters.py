@@ -8,6 +8,5 @@ class LinkInfoFilter(filters.FilterSet):
         fields =  {
             'parentId': ['exact',],
             'isEnabled': ['exact',],
+            'linkTypeId': ['exact',],
         }
-        # search_fields = ["=parentId", "=isEnabled"]
-        # ordering_fields = ["sortOrderId"]

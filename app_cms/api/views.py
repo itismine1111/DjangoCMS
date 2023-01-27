@@ -386,3 +386,13 @@ class ListLinkInfoApiFilters(ListAPIView):
     filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_class = LinkInfoFilter
     ordering_fields = ['sortOrderId']
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        response.data = {
+            'success': True,
+            'message': 'List of LinkInfo objects',
+            'data': response.data, 
+            }
+        return response
+
