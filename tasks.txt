@@ -1,8 +1,8 @@
-[] Models
-    [] LinkType
+[-] Models
+    [-] LinkType
         -id [auto increment]
         -type [char]
-    [] LinkInfo
+    [-] LinkInfo
         -id [auto increment]
         -name [char] 
         -linkTypeId [foreign key -> LinkType ]
@@ -17,7 +17,7 @@
         -sortOrderId [int]
 
 
-[] API's
+[-] API's
     [-] LinkType Api's
         [-] Get 
         [-] Create 
@@ -32,12 +32,19 @@
 
     [] Listing Api's
         [-] Get all LinkTypes
-        [] Get all links [LinkInfo]
-            [] Filter by parentId, isEnabled
-            [] Order by sortOrderId
+        [-] Get all links [LinkInfo]
+            [-] Filter by parentId, isEnabled
+            [-] Order by sortOrderId
         
  
 
+[] Frontend
+    [] Add form validations to both the forms
+    [] Post Link Info form
+    [] Error handlin of both the forms
+    [] Add loader to the pages for the ajax requests
+    [] Update the sortorder id when we drag and drop
 
-
+[] Backend
+    [] Add field validations to both the forms
 
