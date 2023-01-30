@@ -94,8 +94,12 @@ $(document).ready(function () {
                         url: API_BASE_URL_ADMIN + "linktype/",
                         data: json,
                         processData: false,
+                        headers: {
+                            'Content-Type':'application/json'
+                        },
                         success: function(response){
                             console.log(response);
+                            event.target.closest("tr").remove();
                             showToast("success", 'Link Type Deleted Successfully!');
                         },
                         error: function(response){

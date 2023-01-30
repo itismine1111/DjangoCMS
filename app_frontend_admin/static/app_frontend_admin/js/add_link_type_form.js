@@ -1,25 +1,40 @@
 $(document).ready(function () {
 
-    $("#add_link_info_form").submit(function (event) {
+    $("#add_link_type_form").submit(function (event) {
         event.preventDefault();
-        // Get form
         var form = document.getElementById("add_link_type_form");
-        // Create an FormData object 
-        // var formData = new FormData(form);
+        var formData = new FormData(form);
 
-        var formData = new FormData();
-        formData.append("linkType", form.elements['linkType'].value);
-        console.log(form.elements['linkType'].value);
-        console.log(formData);
-        for (var key of formData.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
-    
+        var object = {};
+        formData.forEach(function(value, key){
+            object[key] = value;
+        });
+        var json = JSON.stringify(object)
+        console.warn(json);
+
+        // var formData = new FormData();
+        // formData.append("linkType", form.elements['linkType'].value);
+        // console.log(form.elements['linkType'].value);
+        // console.log(formData);
+        // for (var key of formData.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
+
+        // var object = {};
+        // formData.forEach(function(value, key){
+        //     object[key] = value;
+        // });
+        // var json = JSON.stringify(object);
+        // console.warn("reaching here")
+        // console.warn(json)
   
         $.ajax({
             type: "POST",
             url: API_BASE_URL_ADMIN + "linktype/",
-            data: formData,
+            data: json,
+            headers: {
+                'Content-Type':'application/json'
+            },
             processData: false,
             success: function (response){
                 console.log(response)

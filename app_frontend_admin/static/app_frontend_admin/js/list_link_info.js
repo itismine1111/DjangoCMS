@@ -108,8 +108,15 @@ $(document).ready(function () {
 
 
     function addDelBtnEventListener(del_btn, record_id){
-        var formData = new FormData();
-        formData.append("id", record_id);
+
+        var object = {};
+        object["id"] = record_id;
+        var json = JSON.stringify(object);
+        // console.log("json");
+        // console.log(json);
+
+        // var formData = new FormData();
+        // formData.append("id", record_id);
 
         del_btn.addEventListener("click", (event)=>{
             Swal.fire({
@@ -125,10 +132,14 @@ $(document).ready(function () {
                     $.ajax({
                         type: "DELETE",
                         url: API_BASE_URL_ADMIN + "linkinfo/",
-                        data: formData,
+                        data: json,
+                        headers: {
+                            'Content-Type':'application/json'
+                        },
                         processData: false,
                         success: function(response){
                             console.log(response);
+                            event.target.closest("tr").remove();
                             showToast("success", 'Error encountered while deleting Link Info');
                         },
                         error: function(response){

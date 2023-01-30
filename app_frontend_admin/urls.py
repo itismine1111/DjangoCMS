@@ -5,6 +5,6 @@ urlpatterns = [
     path("", index, name="index"),
     path("add-link-type/", add_link_type, name="add-link-type"),
     path("add-link-info/", add_link_info, name="add-link-info"),
-    path("list-link-type/", list_link_type, name="list-link-type"),
-    path("list-link-info/", list_link_info, name="list-link-info"),
+    path("linktype/list/", list_link_type, name="link-type-list"),
+    path("linkinfo/list/", list_link_info, name="link-info-list"),
 ]
