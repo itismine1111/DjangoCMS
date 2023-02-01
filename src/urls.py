@@ -18,11 +18,18 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+from rest_framework_swagger.views import get_swagger_view
+
+swagger_schema_view = get_swagger_view(title='DjangoCMS API')
+
+
 
 urlpatterns = [
     path("api/cms/", include("app_cms.api.urls")),
     path("cms/admin/", include("app_frontend_admin.urls")),
     path("admin/", admin.site.urls),
+    path("swagger/cms/", swagger_schema_view)
+
 ]
 
 

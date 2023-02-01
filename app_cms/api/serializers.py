@@ -16,7 +16,8 @@ class LinkInfoSerializerMinified(serializers.ModelSerializer):
 
 
 class LinkInfoSerializer(serializers.ModelSerializer):
-    headerImage = HybridImageField()
+    headerImage = HybridImageField(allow_null=True)
+    sortOrderId = serializers.IntegerField(allow_null=True)
     class Meta:
         model = LinkInfo
         fields = "__all__"

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # 3rd Party
     "rest_framework",
     "django_filters",
+    'rest_framework_swagger',
     # My Apps
     "app_accounts",
     "app_cms",
@@ -143,3 +144,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }

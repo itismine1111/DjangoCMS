@@ -1,7 +1,9 @@
 $(document).ready(function () {
+    removeErrorParas();
 
     $("#add_link_type_form").submit(function (event) {
         event.preventDefault();
+        removeErrorParas();
         var form = document.getElementById("add_link_type_form");
         var formData = new FormData(form);
 
@@ -9,24 +11,13 @@ $(document).ready(function () {
         formData.forEach(function(value, key){
             object[key] = value;
         });
+
+        if(!addLinkTypeFormIsValid(object)){
+            return;
+        }
+
         var json = JSON.stringify(object)
         console.warn(json);
-
-        // var formData = new FormData();
-        // formData.append("linkType", form.elements['linkType'].value);
-        // console.log(form.elements['linkType'].value);
-        // console.log(formData);
-        // for (var key of formData.entries()) {
-        //     console.log(key[0] + ', ' + key[1]);
-        // }
-
-        // var object = {};
-        // formData.forEach(function(value, key){
-        //     object[key] = value;
-        // });
-        // var json = JSON.stringify(object);
-        // console.warn("reaching here")
-        // console.warn(json)
   
         $.ajax({
             type: "POST",
@@ -42,12 +33,24 @@ $(document).ready(function () {
             },
 
             error: function(response){
-                console.log("ERROR saving new list type");
                 console.error(response)
+                if(response.responseJSON["success"] === false){
+                    handleBackendErrors(response.responseJSON["data"]);
+                }
                 showToast("error", 'Error encountered while creating new Link Type');
             }
         })
     });
+
+    function addLinkTypeFormIsValid(object){
+        isValid = true;
+        if(object["linkType"] === "" || object["linkType"] === null){
+            showErrorMessage("linkType", ["This field may not be blank.",]);
+            isValid = false;
+        }
+    
+        return(isValid);
+      }  
 
 });
 

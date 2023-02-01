@@ -39,12 +39,17 @@
  
 
 [] Frontend
-    [] Add form validations to both the forms
-    [] Post Link Info form
-    [] Error handlin of both the forms
+    [-] Add form validations to both the forms
+    [-] Post Link Info form
+    [-] Error handlin of both the forms
     [] Add loader to the pages for the ajax requests
     [] Update the sortorder id when we drag and drop
+    [] Edit forms Edit link info, edit link tyope
 
-[] Backend
-    [] Add field validations to both the forms
+[-] Backend
+    [-] Add field validations to both the forms
+    [] Make swagger documentation of the Apis (https://django-rest-swagger.readthedocs.io/en/latest/settings/)
 
+
+
+[] Manage non field errors in Frontend by modifing the showErrorMessageFunction

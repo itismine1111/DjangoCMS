@@ -22,6 +22,21 @@
       .active a span{
         text-decoration: underline;
       }
+
+      .mainContentDiv{
+        position: relative;
+      }
+    
+      .loaderContainer {
+        position: absolute;
+          top:0;
+          left:0;
+          width:100%;
+          height:100%;
+          background: white;
+          /* background:red; */
+      }
+    
     </style>
 
     
@@ -135,7 +150,17 @@
             {% endcomment %}
           </div>
         </div>
-        <div class="col py-3">{% block heading %}{% endblock heading %}{% block content %}{% endblock content %}</div>
+        <div class="col py-3 mainContentDiv">
+          <!-- loader -->
+          <div class="d-flex justify-content-center align-items-center loaderContainer" id="loader" style="display:none !important;">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          
+          {% block heading %}{% endblock heading %}
+          {% block content %}{% endblock content %}
+        </div>
       </div>
     </div>
 
@@ -214,6 +239,40 @@
           });
         }
       }
+
+      function showErrorMessage(fieldName, errorMessageArray){
+        var errorPara = document.createElement("p");
+        errorPara.classList.add("error");
+        errorPara.setAttribute("id", fieldName+"Errors");
+        errorPara.style.color = "red";
+        errorPara.style.fontSize = "16px";
+    
+        for(let i=0; i< errorMessageArray.length; i++){
+            errorPara.innerHTML = errorPara.innerHTML + "<br>" + errorMessageArray[i];
+        }
+    
+        var field = document.getElementsByName(fieldName)[0];
+        field.parentNode.insertBefore(errorPara, field.nextSibling);
+      }
+    
+    
+      function removeErrorParas(){
+        let errorPara = document.querySelectorAll('.error');
+        errorPara.forEach(element => {
+         element.remove();
+        });
+        }
+    
+    
+        function handleBackendErrors(object){
+            // console.error("HANDLING BACKEND ERRORS");
+            // console.error(object);
+    
+            for (const [key, value] of Object.entries(object)) {
+                // console.log(key, value);
+                showErrorMessage(key, value);
+            }
+        }
     </script>
 
 

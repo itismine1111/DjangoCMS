@@ -14,6 +14,12 @@ $(document).ready(function () {
             type: "GET",
             url: url,
             processData: false,
+            beforeSend: function(xhr, status){
+                // $('#loader').show();
+            },
+            complete: function(){
+                // $('#loader').css("display", "none !important");
+            },
             success: function (response){
                 // console.log(response["data"])
                 // console.log(response["data"].length)
@@ -96,12 +102,11 @@ $(document).ready(function () {
                     
                 }
     
-    
             },
     
             error: function(response){
-                console.log("ERROR saving new list type");
-                console.error(response)
+                console.log("Error retreiving the list of link infos");
+                console.error(response);
             }
         })
     }
@@ -198,7 +203,7 @@ $(document).ready(function () {
     var filterSelectbox = document.getElementById("filter-selectbox");
     filterSelectbox.addEventListener("change", (event)=>{
         let selectedValue = $("#filter-selectbox option:selected").val();
-        if (selectedValue === 0){
+        if (selectedValue === "0"){
             var newURL = API_BASE_URL_ADMIN + "linkinfo/list/";
         }
         else{
