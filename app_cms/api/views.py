@@ -15,7 +15,9 @@ class LinkTypeApi(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
-        id = request.data.get("id")
+        # id = request.data.get("id")
+
+        id = request.GET.get("id")
 
         try:
             obj = LinkType.objects.get(id=id)
@@ -172,7 +174,9 @@ class LinkInfoApi(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
-        id = request.data.get("id")
+        # id = request.data.get("id")
+
+        id = request.GET.get("id")
 
         try:
             obj = LinkInfo.objects.get(id=id)

@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     createTable(url=API_BASE_URL_ADMIN + "linkinfo/list/");
 
     fillFilterByTypeList();
@@ -16,9 +15,11 @@ $(document).ready(function () {
             processData: false,
             beforeSend: function(xhr, status){
                 // $('#loader').show();
+                $('#loader').css("display", "block");
             },
             complete: function(){
-                // $('#loader').css("display", "none !important");
+                // $('#loader').hide();
+                $('#loader').css("display", "none");
             },
             success: function (response){
                 // console.log(response["data"])
@@ -161,9 +162,9 @@ $(document).ready(function () {
 
     function addEditBtnEventListener(edit_btn, record_id){
         edit_btn.addEventListener("click", (event)=>{
-            showToast("success", 'Clicked edit button');   
+            // showToast("success", 'Clicked edit button');
+            window.location.href = EDIT_LINK_INFO_URL_ADMIN + record_id + "/";
         })
-        
     }
 
     function fillFilterByTypeList(){

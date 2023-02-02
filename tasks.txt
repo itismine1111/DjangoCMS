@@ -42,13 +42,16 @@
     [-] Add form validations to both the forms
     [-] Post Link Info form
     [-] Error handlin of both the forms
-    [] Add loader to the pages for the ajax requests
+    [-] Add loader to the pages for the ajax requests
     [] Update the sortorder id when we drag and drop
-    [] Edit forms Edit link info, edit link tyope
+    [] Edit forms Edit link info, edit link type
 
 [-] Backend
     [-] Add field validations to both the forms
-    [] Make swagger documentation of the Apis (https://django-rest-swagger.readthedocs.io/en/latest/settings/)
+    [-] Make swagger documentation of the Apis (https://django-rest-swagger.readthedocs.io/en/latest/settings/)
+    [] Setup authentication for swagger
+    [-] Make name unique in linktype
+    [-] Make name unique in linkinfo
 
 
 

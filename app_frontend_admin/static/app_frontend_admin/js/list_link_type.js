@@ -10,6 +10,14 @@ $(document).ready(function () {
             type: "GET",
             url: API_BASE_URL_ADMIN + "linktype/list/",
             processData: false,
+            beforeSend: function(xhr, status){
+                // $('#loader').show();
+                $('#loader').css("display", "block");
+            },
+            complete: function(){
+                // $('#loader').hide();
+                $('#loader').css("display", "none");
+            },
             success: function (response){
                 // console.log(response["data"])
                 // console.log(response["data"].length)
@@ -115,7 +123,10 @@ $(document).ready(function () {
 
     function addEditBtnEventListener(edit_btn, record_id){
         edit_btn.addEventListener("click", (event)=>{
-            showToast("success", 'Edit button clicked!');
+            // showToast("success", 'Edit button clicked!');
+            // window.location.replace(EDIT_LINK_TYPE_URL_ADMIN + record_id + "/");
+            window.location.href = EDIT_LINK_TYPE_URL_ADMIN + record_id + "/";
+
         })
     }
 

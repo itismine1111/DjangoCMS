@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from drf_extra_fields.fields import HybridImageField
+from app_cms.models import LinkInfo, LinkType
 
 from app_cms.models import LinkType, LinkInfo
 
@@ -7,6 +8,17 @@ class LinkTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = LinkType
         fields = "__all__"
+
+    def validate_linkType(self, value):
+        try:
+            obj = LinkType.objects.get(linkType=value)
+        except LinkType.DoesNotExist:
+            obj = None
+
+        if obj is not None:
+            raise serializers.ValidationError("Another Link Type with the same name already exists.")
+        
+        return value
 
 
 class LinkInfoSerializerMinified(serializers.ModelSerializer):
@@ -32,4 +44,16 @@ class LinkInfoSerializer(serializers.ModelSerializer):
         representation["parent"] = link_info_serializer.data
 
         return representation
+
+    def validate_name(self, value):
+        try:
+            obj = LinkInfo.objects.get(name=value)
+        except LinkInfo.DoesNotExist:
+            obj = None
+
+        if obj is not None:
+            raise serializers.ValidationError("Another Link Info with the same name already exists.")
+        
+        return value
+
     
