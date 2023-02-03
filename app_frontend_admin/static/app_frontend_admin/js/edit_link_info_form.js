@@ -1,10 +1,55 @@
 $(document).ready(function () {
+
     removeErrorParas();
 
-    $("#add_link_type_form").submit(function (event) {
+    var linkInfoObj;
+    var linkInfoObjId;
+
+    var curUrl = window.location.href;
+    curUrl = curUrl.substring(0,curUrl.length-1);
+
+    linkInfoObjId = parseInt(curUrl.substring(curUrl.lastIndexOf('/')+1, curUrl.length));
+
+
+    if (linkInfoObjId === NaN){
+        window.location.replace(NOT_FOUND_404_PAGE_URL_ADMIN);
+    }
+
+    var object = {}
+    object["id"] = linkInfoObjId;
+
+    $.ajax({
+        type: "GET",
+        url: API_BASE_URL_ADMIN + "linkinfo/",
+        data: object,
+        headers: {
+            'Content-Type':'application/json'
+        },
+        beforeSend: function(xhr, status){
+            $('#loader').css("display", "block");
+        },
+        complete: function(){
+            $('#loader').css("display", "none");
+        },
+        processData: true,
+        success: function (response){
+            linkInfoObj = response["data"];
+
+            document.getElementById("nameInputField").value = linkTypeObj["name"];
+
+            console.log(response)
+        },
+
+        error: function(response){
+            console.error(response.responseJSON);
+            window.location.replace(NOT_FOUND_404_PAGE_URL_ADMIN);
+        }
+    })
+
+    $("#edit_link_type_form").submit(function (event) {
         event.preventDefault();
         removeErrorParas();
-        var form = document.getElementById("add_link_type_form");
+        var form = document.getElementById("edit_link_type_form");
         var formData = new FormData(form);
 
         var object = {};
@@ -20,8 +65,8 @@ $(document).ready(function () {
         console.warn(json);
   
         $.ajax({
-            type: "POST",
-            url: API_BASE_URL_ADMIN + "linktype/",
+            type: "PATCH",
+            url: API_BASE_URL_ADMIN + "linktype/" + linkTypeObjId + "/",
             data: json,
             headers: {
                 'Content-Type':'application/json'
