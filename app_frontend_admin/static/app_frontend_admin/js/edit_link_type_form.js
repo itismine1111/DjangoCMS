@@ -100,3 +100,11 @@ $(document).ready(function () {
 });
 
   
+
+// Steps
+// Add an event listener to every field 
+// Maintain a variable to check if any field's value is changed or not
+// If it changes add the field's new value to a new variable which contains only the changed data
+// Enable the update button if value is changed
+// Check for field Validations
+// Post the form

@@ -30,7 +30,7 @@
         [-] Update
         [-] Delete
 
-    [] Listing Api's
+    [-] Listing Api's
         [-] Get all LinkTypes
         [-] Get all links [LinkInfo]
             [-] Filter by parentId, isEnabled
@@ -45,13 +45,17 @@
     [-] Add loader to the pages for the ajax requests
     [-] Edit forms edit link type
     [] Edit forms Edit link info
+    [] Add the ckeditor field in django
     [] Update the sortorder id when we drag and drop
+    [] Frontend application to utilize the apis
+
 
 [-] Backend
     [-] Add field validations to both the forms
     [-] Make swagger documentation of the Apis (https://django-rest-swagger.readthedocs.io/en/latest/settings/)
     [-] Make name unique in linktype
     [-] Make name unique in linkinfo
+    [] Create the api to update the sort Order Id of all the fields at once
     [] Setup authentication for swagger
 
 
