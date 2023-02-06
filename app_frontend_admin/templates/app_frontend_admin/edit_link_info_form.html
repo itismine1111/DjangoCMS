@@ -55,7 +55,7 @@
 
     <!-- useExternalUrl -->
     <div class="mb-3 form-check">
-        <input name="useExternalUrl" type="checkbox" class="form-check-input" id="useExternalUrlCheckbox">
+        <input name="useExternalUrl" type="checkbox" class="form-check-input edit-link-info-form-field" id="useExternalUrlCheckbox">
         <label class="form-check-label edit-link-info-form-field" for="useExternalUrlCheckbox">Use External Url</label>
     </div>
 
@@ -67,7 +67,7 @@
 
     <!-- openInExternalWindow -->
     <div class="mb-3 form-check">
-        <input name="openInExternalWindow" type="checkbox" class="form-check-input" id="openInExternalWindowCheckbox" disabled>
+        <input name="openInExternalWindow" type="checkbox" class="form-check-input edit-link-info-form-field" id="openInExternalWindowCheckbox" disabled>
         <label class="form-check-label edit-link-info-form-field" for="openInExternalWindowCheckbox">Open In External Window</label>
     </div>
 
@@ -82,7 +82,6 @@
         <label for="headerImageFile" class="form-label">Header Image</label>
         <input name="headerImage" class="form-control edit-link-info-form-field" type="file" id="headerImageFile">
     </div> -->
-
     <div class="mb-3">
         <label for="headerImageFile" class="form-label">Header Image</label>
         
@@ -102,7 +101,7 @@
         <textarea name="content" class="form-control edit-link-info-form-field" id="contentTextarea" rows="3" ></textarea>
     </div>
 
-    <button type="submit" class="btn btn-primary">Update</button>
+    <button type="submit" id="update-btn" class="btn btn-primary" disabled>Update</button>
   </form>
   
 

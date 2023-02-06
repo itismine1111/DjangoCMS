@@ -44,7 +44,7 @@
     [-] Error handlin of both the forms
     [-] Add loader to the pages for the ajax requests
     [-] Edit forms edit link type
-    [] Edit forms Edit link info
+    [-] Edit forms Edit link info
     [] Add the ckeditor field in django
     [] Update the sortorder id when we drag and drop
     [] Frontend application to utilize the apis

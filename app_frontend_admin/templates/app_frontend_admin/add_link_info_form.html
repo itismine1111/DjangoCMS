@@ -86,7 +86,12 @@
     <!-- content -->
     <div class="mb-3">
         <label for="contentTextarea" class="form-label">Content</label>
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
         <textarea name="content" class="form-control" id="contentTextarea" rows="3" ></textarea>
+        <script>
+            CKEDITOR.replace( 'content' );
+        </script>
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>
@@ -97,4 +102,6 @@
 
 {% block scripts %}
   <script src="{% static 'app_frontend_admin/js/add_link_info_form.js' %}"></script>
+  <!-- <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+  <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script> -->
 {% endblock scripts %}

@@ -1,6 +1,7 @@
 from django.utils.translation import gettext as _
 from django.db import models
 import uuid
+from ckeditor.fields import RichTextField
 
 class LinkType(models.Model):
     linkType = models.CharField(_("Link Type"), max_length=100, blank=False, null=False,)
@@ -25,7 +26,8 @@ class LinkInfo(models.Model):
         parentId = models.ForeignKey("LinkInfo", on_delete=models.SET_NULL, related_name="linkInfoParent", null=True)
         title = models.CharField(_("Title "), max_length=50, null=True, blank=True)
         isEnabled = models.BooleanField(_("Is Enabled"), default=True)
-        content = models.TextField(_("Content"), null=True, blank=True)
+        # content = models.TextField(_("Content"), null=True, blank=True)
+        content = RichTextField(blank=True, null=True)
         useExternalUrl = models.BooleanField(_("Use External Url"), default=False)
         externalUrl = models.URLField(_("External Url"), max_length=200, null=True, blank=True)
         openInExternalWindow = models.BooleanField(_("Use External Url"), default=False)
