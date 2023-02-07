@@ -146,7 +146,7 @@ $(document).ready(function () {
                         success: function(response){
                             console.log(response);
                             event.target.closest("tr").remove();
-                            showToast("success", 'Error encountered while deleting Link Info');
+                            showToast("success", 'Deleted Link Info Successfully');
                         },
                         error: function(response){
                             showToast("error", 'Error encountered while deleting Link Info');
@@ -170,7 +170,7 @@ $(document).ready(function () {
     function fillFilterByTypeList(){
         $.ajax({
             type: "GET",
-            url: API_BASE_URL_ADMIN + "linktype/list/",
+            url: API_LIST_LINK_TYPE_URL,
             processData: false,
             success: function (response){
                 console.log(response["data"])

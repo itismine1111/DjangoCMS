@@ -22,7 +22,13 @@
     <!-- url -->
     <div class="mb-3">
         <label for="urlInputField" class="form-label">Url</label>
-        <input type="url" name="url" class="form-control edit-link-info-form-field" id="urlInputField" aria-describedby="urlHelp">
+        <input type="text" name="url" class="form-control edit-link-info-form-field" id="urlInputField" aria-describedby="urlHelp">
+    </div>
+
+    <!-- isEnabled -->
+    <div class="mb-3 form-check">
+        <input name="isEnabled" type="checkbox" class="form-check-input edit-link-info-form-field" id="isEnabledCheckbox" checked>
+        <label class="form-check-label" for="isEnabledCheckbox">Is Enabled</label>
     </div>
 
     <!-- linkTypeId -->
@@ -96,9 +102,20 @@
     </div>
 
     <!-- content -->
-    <div class="mb-3">
+    <!-- <div class="mb-3">
         <label for="contentTextarea" class="form-label">Content</label>
         <textarea name="content" class="form-control edit-link-info-form-field" id="contentTextarea" rows="3" ></textarea>
+    </div> -->
+
+    <!-- content -->
+    <div class="mb-3">
+        <label for="contentTextarea" class="form-label">Content</label>
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+        <textarea name="content" class="form-control edit-link-info-form-field" id="contentTextarea" rows="3" ></textarea>
+        <script>
+            CKEDITOR.replace( 'content' );
+        </script>
     </div>
 
     <button type="submit" id="update-btn" class="btn btn-primary" disabled>Update</button>

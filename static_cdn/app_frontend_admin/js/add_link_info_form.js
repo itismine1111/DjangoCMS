@@ -78,6 +78,7 @@ $(document).ready(function () {
             object[key] = value;
         });
         object["headerImage"] = headerImgStringBase64;
+        object["isEnabled"] = document.getElementById("isEnabledCheckbox").checked;
 
         if(object["parentId"] === "0"){
             // console.warn("parent id is 0")
@@ -99,10 +100,9 @@ $(document).ready(function () {
         var json = JSON.stringify(object)
         console.warn(json);
 
-
         $.ajax({
             type: "POST",
-            url: API_BASE_URL_ADMIN + "linkinfo/",
+            url: API_LINK_INFO_URL,
             data: json,
             headers: {
                 'Content-Type':'application/json'

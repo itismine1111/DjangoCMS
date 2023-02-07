@@ -21,7 +21,7 @@ def get_default_header_img_filepath():
 
 class LinkInfo(models.Model):
         name = models.CharField(_("Name"), max_length=100, null=False, blank=False)
-        url = models.URLField(_("Link Url"), max_length=200, null=True, blank=True)
+        url = models.CharField(_("Link Url"), max_length=200, null=True, blank=True)
         linkTypeId = models.ForeignKey(LinkType, on_delete=models.SET_NULL, null=True)
         parentId = models.ForeignKey("LinkInfo", on_delete=models.SET_NULL, related_name="linkInfoParent", null=True)
         title = models.CharField(_("Title "), max_length=50, null=True, blank=True)

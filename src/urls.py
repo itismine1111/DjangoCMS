@@ -25,6 +25,7 @@ swagger_schema_view = get_swagger_view(title='DjangoCMS API')
 
 
 urlpatterns = [
+    path("", include("app_frontend.urls")),
     path("api/cms/", include("app_cms.api.urls")),
     path("cms/admin/", include("app_frontend_admin.urls")),
     path("admin/", admin.site.urls),

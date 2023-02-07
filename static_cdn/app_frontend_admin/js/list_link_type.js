@@ -8,7 +8,7 @@ $(document).ready(function () {
     function createTable(){
         $.ajax({
             type: "GET",
-            url: API_BASE_URL_ADMIN + "linktype/list/",
+            url: API_LIST_LINK_TYPE_URL,
             processData: false,
             beforeSend: function(xhr, status){
                 // $('#loader').show();
@@ -25,10 +25,10 @@ $(document).ready(function () {
                 for(let i=0; i<response["data"].length; i++){
                     var tr = document.createElement("tr");
                     
-                    var td_handle = document.createElement("td")
-                    td_handle.innerHTML = '<i class="bi bi-list handle" style="font-size:24px;"></i>';
-                    td_handle.style.width = "5%";
-                    td_handle.style.paddingBottom = "5px";
+                    // var td_handle = document.createElement("td")
+                    // td_handle.innerHTML = '<i class="bi bi-list handle" style="font-size:24px;"></i>';
+                    // td_handle.style.width = "5%";
+                    // td_handle.style.paddingBottom = "5px";
 
                     var th_sno = document.createElement("th")
                     th_sno.setAttribute("scope", "row");
@@ -54,7 +54,7 @@ $(document).ready(function () {
                     td_actions.appendChild(del_btn);
                     td_actions.appendChild(edit_btn);
                     
-                    tr.appendChild(td_handle);
+                    // tr.appendChild(td_handle);
                     tr.appendChild(th_sno);
                     tr.appendChild(td_name);
                     tr.appendChild(td_actions);

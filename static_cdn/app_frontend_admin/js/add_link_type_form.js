@@ -21,7 +21,7 @@ $(document).ready(function () {
   
         $.ajax({
             type: "POST",
-            url: API_BASE_URL_ADMIN + "linktype/",
+            url: API_LINK_TYPE_URL,
             data: json,
             headers: {
                 'Content-Type':'application/json'

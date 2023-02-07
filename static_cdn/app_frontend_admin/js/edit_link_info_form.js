@@ -105,6 +105,7 @@ $(document).ready(function () {
 
             document.getElementById("nameInputField").value = linkInfoObj["name"];
             document.getElementById("urlInputField").value = linkInfoObj["url"];
+            document.getElementById("isEnabledCheckbox").checked = linkInfoObj["isEnabled"];
 
             if(linkInfoObj["linkTypeId"] !== null){
                 document.getElementById("linkTypeIdSelect").value = linkInfoObj["linkTypeId"];
@@ -126,8 +127,10 @@ $(document).ready(function () {
             document.getElementById("openInExternalWindowCheckbox").checked = linkInfoObj["openInExternalWindow"];
             document.getElementById("sortOrderIdInputField").value = linkInfoObj["sortOrderId"];
             // Header image needs to be set for now headerImgPreview
-            document.getElementById("headerImgPreview").setAttribute("src", linkInfoObj["headerImage"]);
-            document.getElementById("contentTextarea").value = linkInfoObj["content"];
+            document.getElementById("headerImgPreview").setAttribute("src",  linkInfoObj["headerImage"]);
+            // document.getElementById("contentTextarea").value = linkInfoObj["content"];
+            CKEDITOR.instances['contentTextarea'].setData(linkInfoObj["content"]);
+
 
             document.getElementById("externalUrlInputField").disabled = !document.getElementById("useExternalUrlCheckbox").checked;
             document.getElementById("openInExternalWindowCheckbox").disabled = !document.getElementById("useExternalUrlCheckbox").checked;
@@ -152,7 +155,7 @@ $(document).ready(function () {
   
         $.ajax({
             type: "PATCH",
-            url: API_BASE_URL_ADMIN + "linkinfo/" + linkInfoObjId + "/",
+            url: API_LINK_INFO_URL + linkInfoObjId + "/",
             data: json,
             headers: {
                 'Content-Type':'application/json'
@@ -175,24 +178,21 @@ $(document).ready(function () {
     });
 
 
+    // Change event listener on CKEDITOR Content Field
+    CKEDITOR.instances['contentTextarea'].on('change', function() { 
+        var data = CKEDITOR.instances['contentTextarea'].getData();
+        changedLinkInfoObj["content"] = data;
+        // console.log(changedLinkInfoObj);
+    });
 
     // Change event listener on form fields
     var formFields = document.querySelectorAll(".edit-link-info-form-field");
     formFields.forEach(el => el.addEventListener('change', event => {
 
-        // console.warn(event.target.getAttribute("id"));
-
         if(event.target.getAttribute("id") === "headerImageFile"){
             var file = document.getElementById("headerImageFile")['files'][0];
             if (file) {
               document.getElementById("headerImgPreview").src = URL.createObjectURL(file);
-                // var reader = new FileReader();
-                // reader.onload = function () {
-                //     headerImgStringBase64 = reader.result.replace("data:", "").replace(/^.+,/, "");
-                //     imageBase64Stringsep = headerImgStringBase64;
-                // }
-                // reader.readAsDataURL(file);
-
                 var reader = new FileReader();                
                 reader.onload = function () {
                     console.log("Reaching inside Onload");
@@ -241,6 +241,10 @@ $(document).ready(function () {
                 document.getElementById("openInExternalWindowCheckbox").disabled = !event.target.checked;
         }
 
+        else if(event.target.getAttribute("id") === "isEnabledCheckbox"){
+            changedLinkInfoObj["isEnabled"] = event.target.checked;
+        }
+
         else if(event.target.getAttribute("id") === "openInExternalWindowCheckbox"){
             changedLinkInfoObj["openInExternalWindow"] = event.target.checked;
         }
@@ -253,29 +257,6 @@ $(document).ready(function () {
         document.getElementById("update-btn").disabled = false;
           
       }));
-
-
-//     var headerImg = document.getElementById("headerImageFile");
-//     headerImg.addEventListener("change", ()=>{
-
-//         // alert("On changed");
-//         var file = document.querySelector(
-//             'input[type=file]')['files'][0];
-    
-//         var reader = new FileReader();
-//         console.log("next");
-        
-//         reader.onload = function () {
-//             headerImgStringBase64 = reader.result.replace("data:", "")
-//                 .replace(/^.+,/, "");
-    
-//             imageBase64Stringsep = headerImgStringBase64;
-        
-//             // alert(imageBase64Stringsep);
-//             // console.log(headerImgStringBase64);
-//         }
-//         reader.readAsDataURL(file);
-//   });
 
 
   function editLinkInfoFormIsValid(object){

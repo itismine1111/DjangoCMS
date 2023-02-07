@@ -66,7 +66,7 @@ $(document).ready(function () {
   
         $.ajax({
             type: "PATCH",
-            url: API_BASE_URL_ADMIN + "linktype/" + linkTypeObjId + "/",
+            url: API_LINK_TYPE_URL + linkTypeObjId + "/",
             data: json,
             headers: {
                 'Content-Type':'application/json'
