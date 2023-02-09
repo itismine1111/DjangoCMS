@@ -5,7 +5,9 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 from rest_framework.decorators import api_view
 from rest_framework.filters import OrderingFilter
-from django_filters.rest_framework import DjangoFilterBackend 
+from django_filters.rest_framework import DjangoFilterBackend
+from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt
 from app_cms.models import LinkInfo, LinkType
 from .serializers import LinkInfoSerializer, LinkTypeSerializer
 from .filters import LinkInfoFilter
@@ -400,3 +402,86 @@ class ListLinkInfoApiFilters(ListAPIView):
             }
         return response
 
+
+class ListLinkInfoApiTreeView(ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = LinkInfoSerializer
+    queryset = LinkInfo.objects.all()
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
+    filterset_class = LinkInfoFilter
+    ordering_fields = ['sortOrderId']
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        # print(response)
+        # print(response.data)
+        # print(type(response.data))
+
+        resultlist = []
+        datalist = response.data
+
+        for data in datalist:
+            if(data['parentId'] == None):
+                resultlist.append(data)
+        
+        print(len(resultlist))
+        
+
+
+        response.data = {
+            'success': True,
+            'message': 'List of LinkInfo objects',
+            'data': response.data, 
+            }
+        return response
+
+
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def set_sorting_order(request):
+
+    returnobj = {}
+    objs = []
+    error_occured = False
+    objIdList = request.data.get("linkInfoIdList")
+    # print("objIdList")
+    # print(objIdList)
+    # return Response({"success": True}, status=status.HTTP_200_OK)
+
+    for id in objIdList:
+        try:
+            objs.append(LinkInfo.objects.get(id=id))
+        except LinkInfo.DoesNotExist:
+            error_occured = True
+
+    if(error_occured):
+        returnobj["success"] = False
+        returnobj["message"] = "Error Occured while updating fields"
+        returnobj["data"] = {}
+        return Response(returnobj, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    try:
+        with transaction.atomic():
+            for index, obj in enumerate(objs):
+                # obj.update(sortOrderId=index)
+                obj.sortOrderId = index
+                obj.save(update_fields=['sortOrderId'])
+
+                print(f"{index} :: {obj.sortOrderId} :: {obj}")
+                
+    except:
+        error_occured = True
+        
+
+    if(error_occured):
+        returnobj["success"] = False
+        returnobj["message"] = "Error Occured while updating fields"
+        returnobj["data"] = {}
+        return Response(returnobj, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    returnobj["success"] = True
+    returnobj["message"] = "Updated sorted order successfully"
+    returnobj["data"] = {}
+
+    return Response(returnobj, status=status.HTTP_200_OK)

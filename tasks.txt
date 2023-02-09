@@ -1,42 +1,3 @@
-[-] Models
-    [-] LinkType
-        -id [auto increment]
-        -type [char]
-    [-] LinkInfo
-        -id [auto increment]
-        -name [char] 
-        -linkTypeId [foreign key -> LinkType ]
-        -parentId [foreign key -> LinkInfo/self]
-        -Title [char]
-        -headerImage [image/file]
-        -isEnabled [bool]
-        -content [textarea]
-        -externalUrl [url]
-        -useExternalUrl [bool]
-        -openInExternalWindow [bool]
-        -sortOrderId [int]
-
-
-[-] API's
-    [-] LinkType Api's
-        [-] Get 
-        [-] Create 
-        [-] Update
-        [-] Delete
-
-    [-] LinkInfo Apis's
-        [-] Get
-        [-] Create
-        [-] Update
-        [-] Delete
-
-    [-] Listing Api's
-        [-] Get all LinkTypes
-        [-] Get all links [LinkInfo]
-            [-] Filter by parentId, isEnabled
-            [-] Order by sortOrderId
-        
- 
 
 [] Frontend
     [-] Add form validations to both the forms
@@ -45,19 +6,69 @@
     [-] Add loader to the pages for the ajax requests
     [-] Edit forms edit link type
     [-] Edit forms Edit link info
-    [] Add the ckeditor field in django
-    [] Update the sortorder id when we drag and drop
+    [-] Add the ckeditor field in django
+    [-] Update the sortorder id when we drag and drop
+    [] Revert the changes of drag and drop id the api returns false
     [] Frontend application to utilize the apis
+        [] Create Header, footer
+        [] Generate links based on sortOrderId
+        [] If a link has children, create a dropdown for it and create links inside
+    [] On list info page Use the Bread Crumb technique to apply filters
 
 
 [-] Backend
+    [-] API's
+        [-] LinkType Api's
+            [-] Get 
+            [-] Create 
+            [-] Update
+            [-] Delete
+
+        [-] LinkInfo Apis's
+            [-] Get
+            [-] Create
+            [-] Update
+            [-] Delete
+
+        [-] Listing Api's
+            [-] Get all LinkTypes
+            [-] Get all links [LinkInfo]
+            [-] Filter by parentId, isEnabled
+            [-] Order by sortOrderId
+        
+        [-] Models
+            [-] LinkType
+                -id [auto increment]
+                -type [char]
+            [-] LinkInfo
+                -id [auto increment]
+                -name [char] 
+                -linkTypeId [foreign key -> LinkType ]
+                -parentId [foreign key -> LinkInfo/self]
+                -Title [char]
+                -headerImage [image/file]
+                -isEnabled [bool]
+                -content [textarea]
+                -externalUrl [url]
+                -useExternalUrl [bool]
+                -openInExternalWindow [bool]
+                -sortOrderId [int]
     [-] Add field validations to both the forms
     [-] Make swagger documentation of the Apis (https://django-rest-swagger.readthedocs.io/en/latest/settings/)
     [-] Make name unique in linktype
     [-] Make name unique in linkinfo
-    [] Create the api to update the sort Order Id of all the fields at once
+    [-] Create the api to update the sort Order Id of all the fields at once
+
+    [] Filter with parentId with multiple values using "&" operator
+    [] List infos 
+        [] Create the tree view from parent child relationsips in the list
+        [] Cache the json data
+        [] Handle the caching when the list info is create or updated
+
+
+
+
+
+[] Not very important
     [] Setup authentication for swagger
-
-
-
-[] Manage non field errors in Frontend by modifing the showErrorMessageFunction
+    [] Manage non field errors in Frontend by modifing the showErrorMessageFunction

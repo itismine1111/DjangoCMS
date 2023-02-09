@@ -1,14 +1,48 @@
 $(document).ready(function () {
-    createTable(url=API_BASE_URL_ADMIN + "linkinfo/list/");
+    createTable(url=API_BASE_URL_ADMIN + "linkinfo/list/?ordering=sortOrderId");
 
     fillFilterByTypeList();
 
     $( "#table-body" ).sortable({
         handle: '.handle',
-        cursor: 'move'
+        cursor: 'move',
+        // stop: sortEventHandler
     });
-   
-    function createTable(url){
+
+    var $sortableList = $("#table-body");
+    var sortEventHandler = function(event, ui){
+        // console.log("New sort order!");/
+        var listElements = document.querySelectorAll("#table-body tr");
+        // console.log(listElements);
+        var listElementIds = [];
+        for(let i=0; i<listElements.length; i++){
+            listElementIds.push(listElements[i].getAttribute("data-id"))
+        }
+        console.log(listElementIds);
+
+        $.ajax({
+            type: "POST",
+            url: API_BASE_URL + "linkinfo/sort-order-ids/",
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify({"linkInfoIdList": listElementIds}),
+            success: function(response){
+                console.log(response);
+            }, 
+            error: function(response){
+                console.log(response);
+            }
+
+        });
+
+    };
+    $sortableList.on("sortstop", sortEventHandler);
+    // $sortableList.on("sortchange", sortEventHandler);
+
+    
+
+
+     function createTable(url){
         $.ajax({
             type: "GET",
             url: url,
@@ -27,6 +61,7 @@ $(document).ready(function () {
                 document.getElementById("table-body").innerHTML = "";
                 for(let i=0; i<response["data"].length; i++){
                     var tr = document.createElement("tr");
+                    tr.setAttribute("data-id", response["data"][i]["id"]);
 
                     var td_handle = document.createElement("td")
                     td_handle.innerHTML = '<i class="bi bi-list handle" style="font-size:24px;"></i>';

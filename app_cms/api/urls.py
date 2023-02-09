@@ -6,7 +6,9 @@ from .views import (
     updateLinkInfo,
     ListLinkTypeApi,
     ListLinkInfoApi,
-    ListLinkInfoApiFilters
+    ListLinkInfoApiFilters,
+    ListLinkInfoApiTreeView,
+    set_sorting_order
 )
 
 urlpatterns = [
@@ -17,4 +19,6 @@ urlpatterns = [
     path("linktype/list/", ListLinkTypeApi.as_view(), name="api-listLinkType"),
     path("linkinfo/list/filters", ListLinkInfoApi.as_view(), name="api-listLinkInfo"),
     path("linkinfo/list/", ListLinkInfoApiFilters.as_view(), name="api-listLinkInfoFilters"),
+    path("linkinfo/list/treeview/", ListLinkInfoApiTreeView.as_view(), name="api-listLinkInfoFilters"),
+    path("linkinfo/sort-order-ids/", set_sorting_order, name="api-listLinkInfoSortOrderIds"),
 ]
