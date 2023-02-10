@@ -1,29 +1,47 @@
-class Node:
-    def __init__(self, item, parentId=None, children=None):
-        self.item = item
-        self.parent = parentId
-        self.children = children or []
+datalist = [
+    {"id": 1, "parentId": None, "children": []},
+    {"id": 2, "parentId": None, "children": []},
+    {"id": 3, "parentId": 2, "children": []},
+    {"id": 4, "parentId": 2, "children": []},
+    {"id": 5, "parentId": 3, "children": []},
+    {"id": 6, "parentId": 3, "children": []},
+    {"id": 7, "parentId": 5, "children": []},
+    {"id": 8, "parentId": None, "children": []},
+    {"id": 9, "parentId": None, "children": []},
+    {"id": 10, "parentId": None, "children": []},
+    {"id": 11, "parentId": 10, "children": []},
+    {"id": 12, "parentId": 11, "children": []},
+    {"id": 13, "parentId": None, "children": []},
+    {"id": 14, "parentId": None, "children": []},
+    {"id": 15, "parentId": 14, "children": []},
+    {"id": 16, "parentId": 15, "children": []},
+    {"id": 17, "parentId": 15, "children": []},
+    {"id": 18, "parentId": 18, "children": []},
+    {"id": 19, "parentId": None, "children": []},
+    {"id": 20, "parentId": None, "children": []},
+]
 
-    def __str__(self):
-        return str(self.item)
 
-def construct_tree(lst):
-    node_map = {}
+from collections import defaultdict
 
-    for item in lst:
-        node = Node(item)
-        node_map[item['id']] = node
+def build_tree(objects):
+    # Create a dictionary to store the parent-child relationships
+    parent_child_map = defaultdict(list)
+    for obj in objects:
+        parent_child_map[obj['parentId']].append(obj)
+    # Recursively traverse the dictionary to build the tree
+    def build_branch(parent_id):
+        branch = []
+        for child in parent_child_map.get(parent_id, []):
+            branch.append({
+                'id': child['id'],
+                'children': build_branch(child['id'])
+            })
+        return branch
+    # Return the tree rooted at the parent with id None
+    return build_branch(None)
 
-    for item in lst:
-        node = node_map[item['id']]
-        parent_id = item.get('parentId')
-        if parent_id:
-            parent = node_map.get(parent_id)
-            if parent:
-                parent.children.append(node)
-                node.parent = parent
 
-    # Find the root node(s) with no parent
-    root_nodes = [node for node in node_map.values() if node.parent is None]
 
-    return root_nodes
+tree = build_tree(datalist)
+print(tree)

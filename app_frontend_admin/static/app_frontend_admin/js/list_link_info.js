@@ -64,7 +64,7 @@ $(document).ready(function () {
                     tr.setAttribute("data-id", response["data"][i]["id"]);
 
                     var td_handle = document.createElement("td")
-                    td_handle.innerHTML = '<i class="bi bi-list handle" style="font-size:24px;"></i>';
+                    td_handle.innerHTML = '<i class="bi bi-grip-vertical handle" style="font-size:24px;"></i>';
                     td_handle.style.width = "5%";
                     td_handle.style.paddingBottom = "5px";
     

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 
@@ -10,7 +10,9 @@ def error_not_found_404(request):
     return render(request, 'app_frontend_admin/404_not_found.html')
 
 def index(request):
-    return render(request, 'app_frontend_admin/index.html')
+    # return render(request, 'app_frontend_admin/index.html')
+    return redirect('linktype-list')
+
 
 def add_link_type(request):
     return render(request, 'app_frontend_admin/add_link_type_form.html')
