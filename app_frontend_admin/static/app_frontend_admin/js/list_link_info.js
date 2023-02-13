@@ -1,5 +1,13 @@
 $(document).ready(function () {
-    createTable(url=API_BASE_URL_ADMIN + "linkinfo/list/?ordering=sortOrderId");
+    var selectedParentId = $('#filter-selectbox-parentid option:selected').val();
+    var selectedParentName = $('#filter-selectbox-parentid option:selected').text();
+
+    createBreadcrumbLink();
+    // console.log(selectdPatentId);
+    // console.log(selectdPatentName);
+
+    createTable();
+    // createTable(url=API_BASE_URL_ADMIN + "linkinfo/list/?ordering=sortOrderId");
 
     fillFilterByTypeList();
 
@@ -42,11 +50,16 @@ $(document).ready(function () {
     
 
 
-     function createTable(url){
+     function createTable(){
+        obj = getQueryStringObject();
+        obj["ordering"] = "sortOrderId";
         $.ajax({
             type: "GET",
-            url: url,
-            processData: false,
+            url: API_BASE_URL_ADMIN + "linkinfo/list/",
+            // data: JSON.stringify(obj),
+            data: obj,
+            processData: true,
+            contentType: 'application/json',
             beforeSend: function(xhr, status){
                 // $('#loader').show();
                 $('#loader').css("display", "block");
@@ -134,9 +147,9 @@ $(document).ready(function () {
                     tr.appendChild(td_sort_order_id);
                     tr.appendChild(td_actions);
     
-                    document.getElementById("table-body").appendChild(tr);
-                    
+                    document.getElementById("table-body").appendChild(tr);   
                 }
+                fillFilterByParentIdSelectBox(response["data"]);
     
             },
     
@@ -202,7 +215,7 @@ $(document).ready(function () {
         })
     }
 
-    function fillFilterByTypeList(){
+    function fillFilterByTypeList(){  
         $.ajax({
             type: "GET",
             url: API_LIST_LINK_TYPE_URL,
@@ -213,7 +226,7 @@ $(document).ready(function () {
                 filterSelectbox.innerHTML = "";
 
                 var option = document.createElement("option");
-                option.setAttribute("value", 0);
+                option.setAttribute("value", "0");
                 option.setAttribute("selected", 'selected');
                 option.innerHTML = "<strong>Filter by type..</strong>";
 
@@ -238,17 +251,139 @@ $(document).ready(function () {
     // onChange() Filter By list type selectbox
     var filterSelectbox = document.getElementById("filter-selectbox");
     filterSelectbox.addEventListener("change", (event)=>{
-        let selectedValue = $("#filter-selectbox option:selected").val();
-        if (selectedValue === "0"){
-            var newURL = API_BASE_URL_ADMIN + "linkinfo/list/";
-        }
-        else{
-            var newURL = API_BASE_URL_ADMIN + "linkinfo/list/?linkTypeId="+selectedValue;
-        }
-        createTable(newURL);
+        
+        createTable();
     })
 
 
+    function fillFilterByParentIdSelectBox(data){
+        console.log(data);
+        var filterSelectbox = document.getElementById("filter-selectbox-parentid");
+        filterSelectbox.innerHTML = "";
+
+        var option = document.createElement("option");
+        option.setAttribute("value", selectedParentId);
+        option.setAttribute("selected", 'selected');
+        option.innerHTML = selectedParentName;
+
+        filterSelectbox.appendChild(option);
+
+        for(let i=0; i<data.length; i++){
+            var option = document.createElement("option");
+            option.setAttribute("value", data[i]["id"]);
+            option.innerHTML = data[i]["name"]
+            filterSelectbox.appendChild(option); 
+        }
+        // $.ajax({
+        //     type: "GET",
+        //     url: url,
+        //     processData: false,
+        //     success: function (response){
+        //         console.log(response["data"])
+        //         var filterSelectbox = document.getElementById("filter-selectbox-parentid");
+        //         filterSelectbox.innerHTML = "";
+
+        //         var option = document.createElement("option");
+        //         option.setAttribute("value", "0");
+        //         option.setAttribute("selected", 'selected');
+        //         option.innerHTML = "<strong>Filter by type..</strong>";
+
+        //         filterSelectbox.appendChild(option);
+
+        //         for(let i=0; i<response["data"].length; i++){
+        //             var option = document.createElement("option");
+        //             option.setAttribute("value", response["data"][i]["id"]);
+        //             option.innerHTML = response["data"][i]["name"]
+        //             filterSelectbox.appendChild(option); 
+        //         }
+        //     },
+    
+        //     error: function(response){
+        //         console.log("Error getting the list info ");
+        //         console.error(response)
+        //     }
+        // })
+    }
+
+    // onChange() Filter By list type selectbox
+    var filterParentIdSelectbox = document.getElementById("filter-selectbox-parentid");
+    filterParentIdSelectbox.addEventListener("change", (event)=>{
+        selectedParentId = $('#filter-selectbox-parentid option:selected').val();
+        selectedParentName = $('#filter-selectbox-parentid option:selected').text();
+        createTable();
+        createBreadcrumbLink();
+    })
+
+
+    function getQueryStringObject(){
+        // let linkTypeValue = $("#filter-selectbox option:selected").val();
+        // let parentIdValue = $("#filter-selectbox-parentid option:selected").val();
+        let linkTypeSelectBox = document.querySelector("#filter-selectbox");
+        let linkTypeValue = linkTypeSelectBox.options[linkTypeSelectBox.selectedIndex].value
+        let parentIdValue = $("#filter-selectbox-parentid option:selected").val();
+
+        obj = {}
+
+        if (linkTypeValue !== "0"){
+            obj["linkTypeId"] = linkTypeValue;
+        }
+
+        if (parentIdValue !== "0"){
+            obj["parentId"] = parentIdValue;
+        }
+        console.warn(obj);
+        return(obj);
+    }
+
+
+    function createBreadcrumbLink(){
+        var bc_header = document.getElementById("breadcrumb-header");
+        var link_li = document.createElement("li");
+        link_li.setAttribute("class", "breadcrumb-item active");
+
+        var link_a = document.createElement("a");
+        link_a.setAttribute("href", "#");
+
+        if(selectedParentId === "0"){
+            link_a.setAttribute("data-parentid", selectedParentId);
+            link_a.setAttribute("data-parentName", selectedParentName);
+            link_a.innerHTML = "All";
+        }
+        else{
+            link_a.setAttribute("data-parentid", selectedParentId);
+            link_a.setAttribute("data-parentName", selectedParentName);
+            link_a.innerHTML = selectedParentName;
+        }
+
+        link_a.addEventListener("click", function(event){
+            event.preventDefault();
+            selectedParentId = event.target.getAttribute("data-parentId");
+            selectedParentName = event.target.getAttribute("data-parentName");
+            event.target.closest('li').classList.add("active");
+            
+            createTable();
+        })
+
+        link_li.appendChild(link_a);
+        bc_header.appendChild(link_li);
+        // var curActiveLi = document.getElementById("breadcrumb-header").getElementsByClassName("active")[0];
+        // console.warn(curActiveLi)
+
+        
+
+        // if(bc_header.hasChildNodes()){
+        //     // document.querySelector(".active").classList.remove("active");
+        //     bc_header.innerHTML = "";
+        //     console.error(bc_header.hasChildNodes());
+        //     console.error("INITIAL")
+        // }
+
+        
+
+
+
+        
+    }
 });
 
   

@@ -11,7 +11,7 @@ class LinkInfoFilter(filters.FilterSet):
     class Meta: 
         model = LinkInfo
         fields =  {
-            # 'parentId': ['exact',],
+            'parentId': ['exact',],
             'isEnabled': ['exact',],
             'linkTypeId': ['exact',],
         }

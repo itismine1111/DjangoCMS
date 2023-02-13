@@ -72,3 +72,15 @@
 [] Not very important
     [] Setup authentication for swagger
     [] Manage non field errors in Frontend by modifing the showErrorMessageFunction
+
+
+
+
+
+
+
+Functions needed:
+    [] fill filter type selectbox
+    [] change listener on filter type selectbox
+    [] fill filter by parent id select box
+    [] change listener on filter type select box
