@@ -3,6 +3,27 @@
 
 {% block linkinfoclass %}active{% endblock linkinfoclass %}
 
+{% block styles %}
+<style>
+  .handle{
+    cursor: grabbing;
+  }
+
+  ol  li.active a{
+    color: gray;
+    text-decoration: none;
+    cursor: text;
+    pointer-events: none;
+}
+</style>
+  
+
+
+{% endblock styles %}
+
+
+
+
 {% block content %}
 
 
@@ -35,9 +56,9 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb" id="breadcrumb-header">
-    <li class="breadcrumb-item" data-parentid="0" data-parentName="All"><a href="#">All</a></li>
+    <!-- <li class="breadcrumb-item" data-parentid="0" data-parentName="All"><a href="#">All</a></li>
     <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Library</li>
+    <li class="breadcrumb-item active" aria-current="page">Library</li> -->
   </ol>
 </nav>
 
