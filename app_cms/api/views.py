@@ -8,9 +8,13 @@ from rest_framework.filters import OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 from app_cms.models import LinkInfo, LinkType
-from .serializers import LinkInfoSerializer, LinkTypeSerializer
+from .serializers import LinkInfoSerializer, LinkTypeSerializer, GetLinkInfoSerializerTreeView
 from .filters import LinkInfoFilter
+from collections import defaultdict
+import json
+
 
 
 class LinkTypeApi(APIView):
@@ -448,6 +452,7 @@ def set_sorting_order(request):
     # print("objIdList")
     # print(objIdList)
     # return Response({"success": True}, status=status.HTTP_200_OK)
+    # return Response({"success": False}, status=status.HTTP_400_BAD_REQUEST)
 
     for id in objIdList:
         try:
@@ -467,8 +472,7 @@ def set_sorting_order(request):
                 # obj.update(sortOrderId=index)
                 obj.sortOrderId = index
                 obj.save(update_fields=['sortOrderId'])
-
-                print(f"{index} :: {obj.sortOrderId} :: {obj}")
+                # print(f"{index} :: {obj.sortOrderId} :: {obj}")
                 
     except:
         error_occured = True
@@ -485,3 +489,79 @@ def set_sorting_order(request):
     returnobj["data"] = {}
 
     return Response(returnobj, status=status.HTTP_200_OK)
+
+
+def build_tree(objects):
+    # Create a dictionary to store the parent-child relationships
+    parent_child_map = defaultdict(list)
+    # print("parent_child_map:-")
+    # print(parent_child_map)
+    for obj in objects:
+        parent_child_map[obj['parentId']].append(obj)
+    # Recursively traverse the dictionary to build the tree
+    def build_branch(parent_id):
+        branch = []
+        for child in parent_child_map.get(parent_id, []):
+            branch.append({
+                'id': child['id'],
+                'name': child['name'],
+                'url': child['url'],
+                'linkTypeId': child['linkTypeId'],
+                'parentId': child['parentId'],
+                'useExternalUrl': child['useExternalUrl'],
+                'externalUrl': child['externalUrl'],
+                'openInExternalWindow': child['openInExternalWindow'],
+                'sortOrderId': child['sortOrderId'],
+                'children': build_branch(child['id'])
+            })
+        return branch
+    # Return the tree rooted at the parent with id None
+    return build_branch(None)
+
+
+
+@api_view(['GET'])
+def get_link_infos_tree_view(request):
+    datalist = []
+    objs = LinkInfo.objects.filter(isEnabled=True).order_by("sortOrderId")
+
+    for obj in objs:
+        temp = {}
+        temp["id"] = obj.id
+        temp["name"] = obj.name
+        temp["url"] = obj.url
+
+        if(obj.linkTypeId is not None):
+            temp["linkTypeId"] = obj.linkTypeId.id
+        else:
+            temp["linkTypeId"] = None
+
+        if(obj.parentId is not None):
+            temp["parentId"] = obj.parentId.id
+        else:
+            temp["parentId"] = None
+
+        temp["useExternalUrl"] = obj.useExternalUrl
+        temp["externalUrl"] = obj.externalUrl
+        temp["openInExternalWindow"] = obj.openInExternalWindow
+        temp["sortOrderId"] = obj.sortOrderId
+        temp["children"] = []
+        datalist.append(temp)
+
+    # print(datalist)
+    treeview = build_tree(datalist)
+    # print(treeview)
+    # print(json.dumps(treeview))
+
+
+
+    return Response({
+        "success": True,
+        "message": "List of all Link infos in tree view", 
+        "data" : treeview
+    }, status=status.HTTP_200_OK)
+
+
+
+
+

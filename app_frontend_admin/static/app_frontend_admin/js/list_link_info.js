@@ -36,9 +36,12 @@ $(document).ready(function () {
             data: JSON.stringify({"linkInfoIdList": listElementIds}),
             success: function(response){
                 console.log(response);
+                showToast("success", "Order changed successfully");
             }, 
             error: function(response){
-                console.log(response);
+                $sortableList.sortable('cancel');
+                showToast("error", "Error occured. Can't change the order");
+                // console.log(response);
             }
 
         });

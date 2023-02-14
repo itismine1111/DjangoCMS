@@ -8,7 +8,8 @@ from .views import (
     ListLinkInfoApi,
     ListLinkInfoApiFilters,
     ListLinkInfoApiTreeView,
-    set_sorting_order
+    set_sorting_order,
+    get_link_infos_tree_view
 )
 
 urlpatterns = [
@@ -21,4 +22,5 @@ urlpatterns = [
     path("linkinfo/list/", ListLinkInfoApiFilters.as_view(), name="api-listLinkInfoFilters"),
     path("linkinfo/list/treeview/", ListLinkInfoApiTreeView.as_view(), name="api-listLinkInfoFilters"),
     path("linkinfo/sort-order-ids/", set_sorting_order, name="api-listLinkInfoSortOrderIds"),
+    path("linkinfo/treeview/", get_link_infos_tree_view, name="api-listLinkInfoTreeView"),
 ]

@@ -1,3 +1,4 @@
+from collections import defaultdict
 from rest_framework import serializers
 from drf_extra_fields.fields import HybridImageField
 from app_cms.models import LinkInfo, LinkType
@@ -56,4 +57,14 @@ class LinkInfoSerializer(serializers.ModelSerializer):
         
         return value
 
-    
+
+
+class GetLinkInfoSerializerTreeView(serializers.ModelSerializer):
+    class Meta:
+        model = LinkInfo
+        fields = ("name", "url", "linkTypeId", "parentId", "isEnabled", "useExternalUrl", "externalUrl", "openInExternalWindow", "sortOrderId")
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        return representation
+

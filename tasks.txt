@@ -8,12 +8,12 @@
     [-] Edit forms Edit link info
     [-] Add the ckeditor field in django
     [-] Update the sortorder id when we drag and drop
-    [] Revert the changes of drag and drop id the api returns false
+    [-] Revert the changes of drag and drop id the api returns false
     [] Frontend application to utilize the apis
         [] Create Header, footer
         [] Generate links based on sortOrderId
         [] If a link has children, create a dropdown for it and create links inside
-    [] On list info page Use the Bread Crumb technique to apply filters
+    [-] On list info page Use the Bread Crumb technique to apply filters
 
 
 [-] Backend
@@ -59,7 +59,7 @@
     [-] Make name unique in linkinfo
     [-] Create the api to update the sort Order Id of all the fields at once
 
-    [] Filter with parentId with multiple values using "&" operator
+    
     [] List infos 
         [] Create the tree view from parent child relationsips in the list
         [] Cache the json data
@@ -74,13 +74,11 @@
     [] Manage non field errors in Frontend by modifing the showErrorMessageFunction
 
 
+[] Don't need it but learn
+    [] Filter with parentId with multiple values using "&" operator
 
 
-
-
-
-Functions needed:
-    [] fill filter type selectbox
-    [] change listener on filter type selectbox
-    [] fill filter by parent id select box
-    [] change listener on filter type select box
+[] Test
+    [] Uploading pictures from ckeditor and see if they are getting uploaded or not.
+        [] If they are, where and how?
+        [] If not, fix the upload issue.
