@@ -61,7 +61,7 @@
 
     
     [] List infos 
-        [] Create the tree view from parent child relationsips in the list
+        [-] Create the tree view from parent child relationsips in the list
         [] Cache the json data
         [] Handle the caching when the list info is create or updated
 
