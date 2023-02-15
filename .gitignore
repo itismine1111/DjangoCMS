@@ -1,16 +1,21 @@
+# __pycache__/
+# /__pycache__/
+# */__pycache__/*
+# **/__pycache__/*
+
+# migrations/
+# /migrations/
+# */migrations/*
+# **/migrations/*
+
+# migrations/
+# /migrations/
+# .vscode/
+# /.vscode/
+
 __pycache__/
-/__pycache__/
-*/__pycache__/*
-**/__pycache__/*
-
 migrations/
-/migrations/
-*/migrations/*
-**/migrations/*
-
-migrations/
-/migrations/
 .vscode/
-/.vscode/
+django_cache/
 
 

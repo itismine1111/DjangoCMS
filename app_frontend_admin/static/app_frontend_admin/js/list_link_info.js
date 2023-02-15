@@ -56,6 +56,9 @@ $(document).ready(function () {
      function createTable(){
         obj = getQueryStringObject();
         obj["ordering"] = "sortOrderId";
+        if(selectedParentId === "0"){
+            obj["parentId"] = ""
+        }
         $.ajax({
             type: "GET",
             url: API_BASE_URL_ADMIN + "linkinfo/list/",
@@ -335,6 +338,7 @@ $(document).ready(function () {
         if (parentIdValue !== "0"){
             obj["parentId"] = parentIdValue;
         }
+
         console.warn(obj);
         return(obj);
     }

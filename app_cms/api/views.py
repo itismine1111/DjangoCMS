@@ -9,11 +9,13 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
+from django.core.cache import cache
 from app_cms.models import LinkInfo, LinkType
 from .serializers import LinkInfoSerializer, LinkTypeSerializer, GetLinkInfoSerializerTreeView
 from .filters import LinkInfoFilter
 from collections import defaultdict
 import json
+from pprint import pprint
 
 
 
@@ -399,9 +401,11 @@ class ListLinkInfoApiFilters(ListAPIView):
 
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
+        count = len(response.data)
         response.data = {
             'success': True,
             'message': 'List of LinkInfo objects',
+            'count': count,
             'data': response.data, 
             }
         return response
@@ -522,38 +526,50 @@ def build_tree(objects):
 
 @api_view(['GET'])
 def get_link_infos_tree_view(request):
-    datalist = []
-    objs = LinkInfo.objects.filter(isEnabled=True).order_by("sortOrderId")
 
-    for obj in objs:
-        temp = {}
-        temp["id"] = obj.id
-        temp["name"] = obj.name
-        temp["url"] = obj.url
+    found_in_cache = True
+    # look for list_link_info_tree_view_obj object in cache
+    treeview = cache.get("list_link_info_tree_view_obj")
 
-        if(obj.linkTypeId is not None):
-            temp["linkTypeId"] = obj.linkTypeId.id
-        else:
-            temp["linkTypeId"] = None
+    # If not found, create object, save in cache and return respinse
+    if treeview is None:
+        found_in_cache = False
+        datalist = []
+        objs = LinkInfo.objects.filter(isEnabled=True).order_by("sortOrderId")
 
-        if(obj.parentId is not None):
-            temp["parentId"] = obj.parentId.id
-        else:
-            temp["parentId"] = None
+        for obj in objs:
+            temp = {}
+            temp["id"] = obj.id
+            temp["name"] = obj.name
+            temp["url"] = obj.url
 
-        temp["useExternalUrl"] = obj.useExternalUrl
-        temp["externalUrl"] = obj.externalUrl
-        temp["openInExternalWindow"] = obj.openInExternalWindow
-        temp["sortOrderId"] = obj.sortOrderId
-        temp["children"] = []
-        datalist.append(temp)
+            if(obj.linkTypeId is not None):
+                temp["linkTypeId"] = obj.linkTypeId.id
+            else:
+                temp["linkTypeId"] = None
 
-    # print(datalist)
-    treeview = build_tree(datalist)
-    # print(treeview)
-    # print(json.dumps(treeview))
+            if(obj.parentId is not None):
+                temp["parentId"] = obj.parentId.id
+            else:
+                temp["parentId"] = None
 
+            temp["useExternalUrl"] = obj.useExternalUrl
+            temp["externalUrl"] = obj.externalUrl
+            temp["openInExternalWindow"] = obj.openInExternalWindow
+            temp["sortOrderId"] = obj.sortOrderId
+            temp["children"] = []
+            datalist.append(temp)
 
+        treeview = build_tree(datalist)
+        cache.set("list_link_info_tree_view_obj", treeview)
+
+        # with open("tempfiles/listInfoTreeViewOutput.txt", mode="w") as file_object:
+        #     pprint(treeview, stream=file_object)
+    
+        # print(datalist)
+        # print(json.dumps(treeview))
+
+    print("FOUND IN CACHEE") if(found_in_cache) else print("NOT FOUND IN CACHE")
 
     return Response({
         "success": True,

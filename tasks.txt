@@ -58,7 +58,7 @@
     [-] Make name unique in linktype
     [-] Make name unique in linkinfo
     [-] Create the api to update the sort Order Id of all the fields at once
-
+    [] List only the Lists Infos with parents Null on listinfo page
     
     [] List infos 
         [-] Create the tree view from parent child relationsips in the list
