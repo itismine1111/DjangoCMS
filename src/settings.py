@@ -149,7 +149,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
 
-CACHE_LOCATION = Path(str(BASE_DIR) + "\\tmp\django_cache")
+# CACHE_LOCATION = Path(str(BASE_DIR) + "\\tmp\django_cache")
+CACHE_LOCATION = os.path.join(BASE_DIR, "tmp", "django_cache")
+
 CACHES = {
    'default': {
       'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
