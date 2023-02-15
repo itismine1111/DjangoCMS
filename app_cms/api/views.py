@@ -364,32 +364,6 @@ class ListLinkTypeApi(APIView):
         )
 
 
-class ListLinkInfoApi(APIView):
-    permission_classes = [AllowAny]
-
-    def get(self, request, *args, **kwargs):
-        objs = LinkInfo.objects.all()
-
-        if objs is not None:
-            serializer = LinkInfoSerializer(objs, many=True)
-            return Response(
-                {
-                    "success": True,
-                    "message": "List of LinkInfo objects",
-                    "data": serializer.data,
-                },
-                status=status.HTTP_200_OK,
-            )
-
-        return Response(
-            {
-                "success": False,
-                "message": "No LinkInfo objects exists",
-                "data": {},
-            },
-            status=status.HTTP_404_NOT_FOUND,
-        )
-
 
 class ListLinkInfoApiFilters(ListAPIView):
     permission_classes = [AllowAny]
@@ -409,39 +383,14 @@ class ListLinkInfoApiFilters(ListAPIView):
             'data': response.data, 
             }
         return response
+    
+    def get_queryset(self):
+        # This is a temporary solution to filter out objs with parentId null or blank
+        # It should be implelented in filter but I cant seen to figure out how
+        if(self.request.GET.get("parentId") == "" or self.request.GET.get("parentId") == None):
+            return LinkInfo.objects.filter(parentId__isnull=True)
+        return LinkInfo.objects.all()
 
-
-class ListLinkInfoApiTreeView(ListAPIView):
-    permission_classes = [AllowAny]
-    serializer_class = LinkInfoSerializer
-    queryset = LinkInfo.objects.all()
-    filter_backends = (DjangoFilterBackend, OrderingFilter)
-    filterset_class = LinkInfoFilter
-    ordering_fields = ['sortOrderId']
-
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        # print(response)
-        # print(response.data)
-        # print(type(response.data))
-
-        resultlist = []
-        datalist = response.data
-
-        for data in datalist:
-            if(data['parentId'] == None):
-                resultlist.append(data)
-        
-        print(len(resultlist))
-        
-
-
-        response.data = {
-            'success': True,
-            'message': 'List of LinkInfo objects',
-            'data': response.data, 
-            }
-        return response
 
 
 
@@ -566,10 +515,10 @@ def get_link_infos_tree_view(request):
         # with open("tempfiles/listInfoTreeViewOutput.txt", mode="w") as file_object:
         #     pprint(treeview, stream=file_object)
     
-        # print(datalist)
+        # print(datalist)   
         # print(json.dumps(treeview))
 
-    print("FOUND IN CACHEE") if(found_in_cache) else print("NOT FOUND IN CACHE")
+    # print("FOUND IN CACHE") if(found_in_cache) else print("NOT FOUND IN CACHE")
 
     return Response({
         "success": True,

@@ -114,11 +114,14 @@ $(document).ready(function () {
                 document.getElementById("linkTypeIdSelect").value = 0;
             }
             
-            if(linkInfoObj["parentId"] !== null){
-                document.getElementById("parentIdSelect").value = linkInfoObj["parentId"];
+            if(linkInfoObj["parentId"]){
+                var selectBoxParentId = document.getElementById("parentIdSelect");
+                selectBoxParentId.value = linkInfoObj["parentId"];
+                
+                // document.getElementById("parentIdSelect").selectedIndex = linkInfoObj["parentId"];
             }
             else{
-                document.getElementById("parentIdSelect").value = 0;
+                document.getElementById("parentIdSelect").selectedIndex  = "0";
             }
 
             document.getElementById("titleInputField").value = linkInfoObj["title"];

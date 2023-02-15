@@ -14,6 +14,7 @@
         [] Generate links based on sortOrderId
         [] If a link has children, create a dropdown for it and create links inside
     [-] On list info page Use the Bread Crumb technique to apply filters
+    [] In edit list info page, select the parent when the page is loaded
 
 
 [-] Backend
@@ -58,12 +59,12 @@
     [-] Make name unique in linktype
     [-] Make name unique in linkinfo
     [-] Create the api to update the sort Order Id of all the fields at once
-    [] List only the Lists Infos with parents Null on listinfo page
+    []  
     
-    [] List infos 
+    [-] List infos 
         [-] Create the tree view from parent child relationsips in the list
-        [] Cache the json data
-        [] Handle the caching when the list info is create or updated
+        [-] Cache the json data
+        [-] Handle the caching when the list info is create or updated
 
 
 
