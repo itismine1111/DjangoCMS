@@ -76,51 +76,48 @@ $(document).ready(function () {
                     ul_submenu.setAttribute("class", "dropdown-menu");
                     li_item.appendChild(ul_submenu);
                     // console.log(data["children"]);
-                    createAndAppendLinks(data["children"], parent_div_id=ul_submenu.getAttribute("id"));
+                    createAndAppendLinks(data["children"], ul_submenu.getAttribute("id"));
                 }
 
             }
-            else{
-                return;
-            }
 
             // If parent is not null 
-            // else{
-            //     var li_item = document.createElement("li");
-            //     li_item.setAttribute("id", data["id"]);
-            //     var a = document.createElement("a");
-            //     a.setAttribute("id", "a-"+ String(data["id"]));
-            //     a.innerHTML = data["name"];
+            else{
+                var li_item = document.createElement("li");
+                li_item.setAttribute("id", data["id"]);
+                var a = document.createElement("a");
+                a.setAttribute("id", "a-"+ String(data["id"]));
+                a.innerHTML = data["name"];
 
-            //     li_item.appendChild(a);
-            //     document.getElementById(parent_div_id).appendChild(li_item);
+                li_item.appendChild(a);
+                document.getElementById(parent_div_id).appendChild(li_item);
 
-            //     console.log("REACHED HERE");
-            //     console.log(data["children"]);
-            //     // return
+                console.log("REACHED HERE");
+                console.log(data["children"]);
+                // return
 
-            //     // If no children -> Make a simple link inside a submenu
-            //     if(data["children"].length === 0){
-            //         // li_item.classList.add("dropdown-item");
-            //         a.setAttribute("class", "dropdown-item");
-            //         a.setAttribute("data-url", data["url"]);
-            //         a.setAttribute("data-useExternalUrl", data["useExternalUrl"]);
-            //         a.setAttribute("data-openInExternalWindow", data["openInExternalWindow"]);
-            //         navLinkAddEventListener(id=a.getAttribute("id"));
-            //     }
+                // If no children -> Make a simple link inside a submenu
+                if(data["children"].length === 0){
+                    // li_item.classList.add("dropdown-item");
+                    a.setAttribute("class", "dropdown-item");
+                    a.setAttribute("data-url", data["url"]);
+                    a.setAttribute("data-useExternalUrl", data["useExternalUrl"]);
+                    a.setAttribute("data-openInExternalWindow", data["openInExternalWindow"]);
+                    navLinkAddEventListener(id=a.getAttribute("id"));
+                }
 
-            //     // If no children -> Make a ul submenu and create links inside that submenu
-            //     else{
-            //         a.innerHTML = a.innerHTML + " &raquo; ";
-
-            //         ul_submenu = document.createElement("ul");
-            //         ul_submenu.setAttribute("id", li_item.getAttribute("id") + "_ul_submenu");
-            //         ul_submenu.setAttribute("class", "submenu dropdown-menu");
-            //         li_item.appendChild(ul_submenu);
-            //         console.log(data["children"]);
-            //         createAndAppendLinks(data["children"], parent_div_id=ul_submenu.getAttribute("id"));
-            //     }
-            // }
+                // If no children -> Make a ul submenu and create links inside that submenu
+                else{
+                    a.innerHTML = a.innerHTML + " &raquo; ";
+                    a.setAttribute("class", "dropdown-item");
+                    ul_submenu = document.createElement("ul");
+                    ul_submenu.setAttribute("id", li_item.getAttribute("id") + "_ul_submenu");
+                    ul_submenu.setAttribute("class", "submenu dropdown-menu");
+                    li_item.appendChild(ul_submenu);
+                    console.log(data["children"]);
+                    createAndAppendLinks(data["children"], ul_submenu.getAttribute("id"));
+                }
+            }
         }
 
         
