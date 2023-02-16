@@ -127,98 +127,13 @@ $(document).ready(function () {
     }
 
 
-    // function createAndAppendLinks(data, parent_div_id){
-    //     console.log("ParentId : " + data["parentId"] );
-
-    //     if(!data || data.length === 0){
-    //         return
-    //     }
-
-    //     // If Parent is null
-    //     if(data["parentId"] === null){
-    //         var li_item = document.createElement("li");
-    //         li_item.setAttribute("id", data["id"]);
-    //         var a = document.createElement("a");
-    //         a.setAttribute("id", "a-"+ String(data["id"]));
-    //         a.innerHTML = data["name"];
-
-    //         li_item.appendChild(a);
-    //         document.getElementById(parent_div_id).appendChild(li_item);
-
-    //         // If no children are present -> Make it a link
-    //         if(data["children"].length === 0){
-    //             li_item.classList.add("nav-item");
-    //             a.classList.add("nav-link");
-    //             a.setAttribute("data-url", data["url"]);
-    //             a.setAttribute("data-useExternalUrl", data["useExternalUrl"]);
-    //             a.setAttribute("data-openInExternalWindow", data["openInExternalWindow"]);
-    //             navLinkAddEventListener(id=a.getAttribute("id"));
-    //         }
-
-    //         // If children are present -> Make a submenu
-    //         else{
-    //             li_item.setAttribute("class", "nav-item dropdown");
-    //             a.setAttribute("class", "nav-link dropdown-toggle");
-    //             a.setAttribute("data-bs-toggle", "dropdown");
-    //             a.setAttribute("data-url", "#");
-    //             navLinkAddEventListener(id=a.getAttribute("id"));
-
-    //             ul_submenu = document.createElement("ul");
-    //             ul_submenu.setAttribute("id", li_item.getAttribute("id") + "_ul_submenu");
-    //             ul_submenu.setAttribute("class", "dropdown-menu");
-    //             li_item.appendChild(ul_submenu);
-    //             console.log(data["children"]);
-    //             for(let i=0; i< data["children"].length; i++){
-    //                 createAndAppendLinks(data["children"][i], parent_div_id=ul_submenu.getAttribute("id"));
-    //             }
-    //         }
-
-    //     }
-
-    //     // If parent is not null 
-    //     else{
-    //         var li_item = document.createElement("li");
-    //         li_item.setAttribute("id", data["id"]);
-    //         var a = document.createElement("a");
-    //         a.setAttribute("id", "a-"+ String(data["id"]));
-    //         a.innerHTML = data["name"];
-
-    //         li_item.appendChild(a);
-    //         document.getElementById(parent_div_id).appendChild(li_item);
-
-    //         console.log("REACHED HERE");
-    //         console.log(data["children"]);
-    //         // return
-
-    //         // If no children -> Make a simple link inside a submenu
-    //         if(data["children"].length === 0){
-    //             // li_item.classList.add("dropdown-item");
-    //             a.setAttribute("class", "dropdown-item");
-    //             a.setAttribute("data-url", data["url"]);
-    //             a.setAttribute("data-useExternalUrl", data["useExternalUrl"]);
-    //             a.setAttribute("data-openInExternalWindow", data["openInExternalWindow"]);
-    //             navLinkAddEventListener(id=a.getAttribute("id"));
-    //         }
-
-    //         // If no children -> Make a ul submenu and create links inside that submenu
-    //         else{
-    //             a.innerHTML = a.innerHTML + " &raquo; ";
-
-    //             ul_submenu = document.createElement("ul");
-    //             ul_submenu.setAttribute("id", li_item.getAttribute("id") + "_ul_submenu");
-    //             ul_submenu.setAttribute("class", "submenu dropdown-menu");
-    //             li_item.appendChild(ul_submenu);
-    //             console.log(data["children"]);
-    //             for(let i=0; i< data["children"].length; i++){
-    //                 createAndAppendLinks(data["children"][i], parent_div_id=ul_submenu.getAttribute("id"));
-    //             }
-    //         }
-    //     }
-
-    // }
-
 
     function navLinkAddEventListener(id){
+        var a = document.getElementById(id);
+        a.addEventListener("click", function(event){
+            event.preventDefault()
+            window.href = a.getAttribute("data-url");
+        })
         // console.log("adding event listenter to: " + id);
     }
 
