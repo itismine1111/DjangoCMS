@@ -268,15 +268,24 @@ $(document).ready(function () {
         var option = document.createElement("option");
         option.setAttribute("value", selectedParentId);
         option.setAttribute("selected", 'selected');
-        option.innerHTML = selectedParentName;
+        option.innerHTML = selectedParentName + "..";
 
         filterSelectbox.appendChild(option);
 
         for(let i=0; i<data.length; i++){
-            var option = document.createElement("option");
-            option.setAttribute("value", data[i]["id"]);
-            option.innerHTML = data[i]["name"]
-            filterSelectbox.appendChild(option); 
+            console.log("OUTER");
+            console.log(data["children"]);
+            if(data[i]["children"] == true){
+                console.log("OUTER");
+                var option = document.createElement("option");
+                option.setAttribute("value", data[i]["id"]);
+                option.innerHTML = data[i]["name"]
+                filterSelectbox.appendChild(option); 
+            }
+            // var option = document.createElement("option");
+            // option.setAttribute("value", data[i]["id"]);
+            // option.innerHTML = data[i]["name"]
+            // filterSelectbox.appendChild(option); 
         }
         // $.ajax({
         //     type: "GET",

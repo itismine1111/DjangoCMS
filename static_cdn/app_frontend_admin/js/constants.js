@@ -6,12 +6,13 @@ const API_LINK_TYPE_URL = API_BASE_URL + "linktype/";
 const API_LINK_INFO_URL = API_BASE_URL + "linkinfo/";
 const API_LIST_LINK_TYPE_URL = API_BASE_URL + "linktype/list/";
 const API_LIST_LINK_INFO_URL = API_BASE_URL + "linkinfo/list/";
+const API_LIST_LINK_INFO_TREE_VIEW_URL = API_BASE_URL + "linkinfo/treeview/";
 
 // USELESS??
 const API_BASE_URL_ADMIN = BASE_URL + "api/cms/";
 
 
-// Frontend URLs Admin
+// Frontend URLs for Admin
 const BASE_URL_ADMIN = BASE_URL + "cms/admin/";
 const NOT_FOUND_404_PAGE_URL_ADMIN = BASE_URL_ADMIN + "error-not-found/";
 const EDIT_LINK_TYPE_URL_ADMIN = BASE_URL_ADMIN + "linktype/edit/";
@@ -20,3 +21,4 @@ const ADD_LINK_TYPE_URL_ADMIN = BASE_URL_ADMIN + "linktype/add/";
 const ADD_LINK_INFO_URL_ADMIN = BASE_URL_ADMIN + "linkinfo/add/";
 const LIST_LINK_TYPE_URL_ADMIN = BASE_URL_ADMIN + "linktype/list/";
 const LIST_LINK_INFO_URL_ADMIN = BASE_URL_ADMIN + "linkinfo/list/";
+

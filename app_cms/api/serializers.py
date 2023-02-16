@@ -44,6 +44,14 @@ class LinkInfoSerializer(serializers.ModelSerializer):
         link_info_serializer = LinkInfoSerializerMinified(instance.parentId)
         representation["parent"] = link_info_serializer.data
 
+        children = LinkInfo.objects.filter(parentId=representation["id"]);
+        # print(f"Children : {len(children)}")
+
+        if(len(children) != 0):
+            representation["children"] = True
+        else:
+            representation["children"] = False
+
         return representation
 
     def validate_name(self, value):
@@ -56,8 +64,7 @@ class LinkInfoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Another Link Info with the same name already exists.")
         
         return value
-
-
+    
 
 class GetLinkInfoSerializerTreeView(serializers.ModelSerializer):
     class Meta:

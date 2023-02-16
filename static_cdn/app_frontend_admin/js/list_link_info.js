@@ -36,9 +36,12 @@ $(document).ready(function () {
             data: JSON.stringify({"linkInfoIdList": listElementIds}),
             success: function(response){
                 console.log(response);
+                showToast("success", "Order changed successfully");
             }, 
             error: function(response){
-                console.log(response);
+                $sortableList.sortable('cancel');
+                showToast("error", "Error occured. Can't change the order");
+                // console.log(response);
             }
 
         });
@@ -53,6 +56,7 @@ $(document).ready(function () {
      function createTable(){
         obj = getQueryStringObject();
         obj["ordering"] = "sortOrderId";
+    
         $.ajax({
             type: "GET",
             url: API_BASE_URL_ADMIN + "linkinfo/list/",
@@ -264,15 +268,24 @@ $(document).ready(function () {
         var option = document.createElement("option");
         option.setAttribute("value", selectedParentId);
         option.setAttribute("selected", 'selected');
-        option.innerHTML = selectedParentName;
+        option.innerHTML = selectedParentName + "..";
 
         filterSelectbox.appendChild(option);
 
         for(let i=0; i<data.length; i++){
-            var option = document.createElement("option");
-            option.setAttribute("value", data[i]["id"]);
-            option.innerHTML = data[i]["name"]
-            filterSelectbox.appendChild(option); 
+            console.log("OUTER");
+            console.log(data["children"]);
+            if(data[i]["children"] == true){
+                console.log("OUTER");
+                var option = document.createElement("option");
+                option.setAttribute("value", data[i]["id"]);
+                option.innerHTML = data[i]["name"]
+                filterSelectbox.appendChild(option); 
+            }
+            // var option = document.createElement("option");
+            // option.setAttribute("value", data[i]["id"]);
+            // option.innerHTML = data[i]["name"]
+            // filterSelectbox.appendChild(option); 
         }
         // $.ajax({
         //     type: "GET",
@@ -320,7 +333,8 @@ $(document).ready(function () {
         // let parentIdValue = $("#filter-selectbox-parentid option:selected").val();
         let linkTypeSelectBox = document.querySelector("#filter-selectbox");
         let linkTypeValue = linkTypeSelectBox.options[linkTypeSelectBox.selectedIndex].value
-        let parentIdValue = $("#filter-selectbox-parentid option:selected").val();
+        // let parentIdValue = $("#filter-selectbox-parentid option:selected").val();
+        let parentIdValue = selectedParentId;
 
         obj = {}
 
@@ -331,6 +345,10 @@ $(document).ready(function () {
         if (parentIdValue !== "0"){
             obj["parentId"] = parentIdValue;
         }
+        else{
+            obj["parentId"] = "";
+        }
+
         console.warn(obj);
         return(obj);
     }
@@ -359,29 +377,26 @@ $(document).ready(function () {
             event.preventDefault();
             selectedParentId = event.target.getAttribute("data-parentId");
             selectedParentName = event.target.getAttribute("data-parentName");
+            console.warn("Id and name changed");
             event.target.closest('li').classList.add("active");
-            
+
+            var elemsAfterActive = document.querySelectorAll("#breadcrumb-header li.active ~ li")
+            if(elemsAfterActive.length !== 0){
+                for (let elem of elemsAfterActive){
+                    elem.remove();
+                }
+            }
             createTable();
         })
 
         link_li.appendChild(link_a);
+
+        var activeElem = document.querySelector("#breadcrumb-header .active");
+        if(activeElem !== null){
+            activeElem.classList.remove("active");
+        }
+
         bc_header.appendChild(link_li);
-        // var curActiveLi = document.getElementById("breadcrumb-header").getElementsByClassName("active")[0];
-        // console.warn(curActiveLi)
-
-        
-
-        // if(bc_header.hasChildNodes()){
-        //     // document.querySelector(".active").classList.remove("active");
-        //     bc_header.innerHTML = "";
-        //     console.error(bc_header.hasChildNodes());
-        //     console.error("INITIAL")
-        // }
-
-        
-
-
-
         
     }
 });

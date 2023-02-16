@@ -4,8 +4,102 @@ $(document).ready(function () {
     var changedLinkInfoObj = {};
     var linkInfoObjId;
 
+    var curUrl = window.location.href;
+    curUrl = curUrl.substring(0,curUrl.length-1);
+
+    linkInfoObjId = parseInt(curUrl.substring(curUrl.lastIndexOf('/')+1, curUrl.length));
+
+
+    if (linkInfoObjId === NaN){
+        window.location.replace(NOT_FOUND_404_PAGE_URL_ADMIN);
+    }
+
+    
+
+
     
     removeErrorParas();
+
+    function fillLinkTypeSelectBox(){
+        $.ajax({
+            type: "GET",
+            url: API_BASE_URL_ADMIN + "linktype/list/",
+            processData: false,
+            beforeSend: function(xhr, status){
+                $('#loader').css("display", "block");
+            },
+            complete: function(){
+                // $('#loader').css("display", "none");
+            },
+            success: function (response){
+                console.log(response["data"])
+                var linkTypeSelectbox = document.getElementById("linkTypeIdSelect");
+                linkTypeSelectbox.innerHTML = "";
+    
+                var option = document.createElement("option");
+                option.setAttribute("value", 0);
+                option.setAttribute("selected", 'selected');
+                option.innerHTML = "<strong>Select..</strong>";
+    
+                linkTypeSelectbox.appendChild(option);
+    
+                for(let i=0; i<response["data"].length; i++){
+                    var option = document.createElement("option");
+                    option.setAttribute("value", response["data"][i]["id"]);
+                    option.innerHTML = response["data"][i]["linkType"]
+                    linkTypeSelectbox.appendChild(option); 
+                }
+                fillParentIdSelectBox();
+            },
+    
+            error: function(response){
+                console.log("ERROR gGetting list type list");
+                console.error(response)
+            }
+        })
+    }
+
+    function fillParentIdSelectBox(){
+        $.ajax({
+            type: "GET",
+            url: API_BASE_URL_ADMIN + "linkinfo/list/",
+            processData: false,
+            beforeSend: function(xhr, status){
+                $('#loader').css("display", "block");
+            },
+            complete: function(){
+                // $('#loader').css("display", "none");
+            },
+            success: function (response){
+                console.log(response["data"])
+                var linkInfoSelectbox = document.getElementById("parentIdSelect");
+                linkInfoSelectbox.innerHTML = "";
+    
+                var option = document.createElement("option");
+                option.setAttribute("value", 0);
+                option.setAttribute("selected", 'selected');
+                option.innerHTML = "<strong>Select..</strong>";
+    
+                linkInfoSelectbox.appendChild(option);
+    
+                for(let i=0; i<response["data"].length; i++){
+                    var option = document.createElement("option");
+                    option.setAttribute("value", response["data"][i]["id"]);
+                    option.innerHTML = response["data"][i]["name"]
+                    linkInfoSelectbox.appendChild(option); 
+                }
+
+                getLinkInfoData();
+            },
+    
+            error: function(response){
+                console.log("ERROR Getting list type list");
+                console.error(response);
+            }
+        })
+    }
+
+    fillLinkTypeSelectBox();
 
     function fillSelectBoxes(){
         $.ajax({
@@ -60,6 +154,8 @@ $(document).ready(function () {
                     option.innerHTML = response["data"][i]["name"]
                     linkInfoSelectbox.appendChild(option); 
                 }
+
+                getLinkInfoData();
             },
     
             error: function(response){
@@ -69,80 +165,136 @@ $(document).ready(function () {
         })
     }
     
-    fillSelectBoxes();
+    // fillSelectBoxes();
 
 
 
-    var curUrl = window.location.href;
-    curUrl = curUrl.substring(0,curUrl.length-1);
 
-    linkInfoObjId = parseInt(curUrl.substring(curUrl.lastIndexOf('/')+1, curUrl.length));
-
-
-    if (linkInfoObjId === NaN){
-        window.location.replace(NOT_FOUND_404_PAGE_URL_ADMIN);
+    function getLinkInfoData(){
+        var object = {}
+        object["id"] = linkInfoObjId;
+        $.ajax({
+            type: "GET",
+            url: API_BASE_URL_ADMIN + "linkinfo/",
+            data: object,
+            headers: {
+                'Content-Type':'application/json'
+            },
+            beforeSend: function(xhr, status){
+                $('#loader').css("display", "block");
+            },
+            complete: function(){
+                $('#loader').css("display", "none");
+            },
+            processData: true,
+            success: function (response){
+                linkInfoObj = response["data"];
+    
+                document.getElementById("nameInputField").value = linkInfoObj["name"];
+                document.getElementById("urlInputField").value = linkInfoObj["url"];
+                document.getElementById("isEnabledCheckbox").checked = linkInfoObj["isEnabled"];
+    
+                if(linkInfoObj["linkTypeId"] !== null){
+                    document.getElementById("linkTypeIdSelect").value = linkInfoObj["linkTypeId"];
+                }
+                else{
+                    document.getElementById("linkTypeIdSelect").value = 0;
+                }
+                
+                if(linkInfoObj["parentId"] !== null){
+                    // var selectBoxParentId = document.getElementById("parentIdSelect");
+                    // selectBoxParentId.value = linkInfoObj["parentId"];
+                    
+                    document.getElementById("parentIdSelect").value = linkInfoObj["parentId"];
+                }
+                else{
+                    document.getElementById("parentIdSelect").selectedIndex  = 0;
+                }
+    
+                document.getElementById("titleInputField").value = linkInfoObj["title"];
+                document.getElementById("useExternalUrlCheckbox").checked = linkInfoObj["useExternalUrl"];
+                document.getElementById("externalUrlInputField").value = linkInfoObj["externalUrl"];
+                document.getElementById("openInExternalWindowCheckbox").checked = linkInfoObj["openInExternalWindow"];
+                document.getElementById("sortOrderIdInputField").value = linkInfoObj["sortOrderId"];
+                // Header image needs to be set for now headerImgPreview
+                document.getElementById("headerImgPreview").setAttribute("src",  linkInfoObj["headerImage"]);
+                // document.getElementById("contentTextarea").value = linkInfoObj["content"];
+                CKEDITOR.instances['contentTextarea'].setData(linkInfoObj["content"]);
+    
+    
+                document.getElementById("externalUrlInputField").disabled = !document.getElementById("useExternalUrlCheckbox").checked;
+                document.getElementById("openInExternalWindowCheckbox").disabled = !document.getElementById("useExternalUrlCheckbox").checked;
+    
+                console.log(response)
+            },
+    
+            error: function(response){
+                console.error(response.responseJSON);
+                window.location.replace(NOT_FOUND_404_PAGE_URL_ADMIN);
+            }
+        })
     }
 
-    var object = {}
-    object["id"] = linkInfoObjId;
+    // $.ajax({
+    //     type: "GET",
+    //     url: API_BASE_URL_ADMIN + "linkinfo/",
+    //     data: object,
+    //     headers: {
+    //         'Content-Type':'application/json'
+    //     },
+    //     beforeSend: function(xhr, status){
+    //         $('#loader').css("display", "block");
+    //     },
+    //     complete: function(){
+    //         $('#loader').css("display", "none");
+    //     },
+    //     processData: true,
+    //     success: function (response){
+    //         linkInfoObj = response["data"];
 
-    $.ajax({
-        type: "GET",
-        url: API_BASE_URL_ADMIN + "linkinfo/",
-        data: object,
-        headers: {
-            'Content-Type':'application/json'
-        },
-        beforeSend: function(xhr, status){
-            $('#loader').css("display", "block");
-        },
-        complete: function(){
-            $('#loader').css("display", "none");
-        },
-        processData: true,
-        success: function (response){
-            linkInfoObj = response["data"];
+    //         document.getElementById("nameInputField").value = linkInfoObj["name"];
+    //         document.getElementById("urlInputField").value = linkInfoObj["url"];
+    //         document.getElementById("isEnabledCheckbox").checked = linkInfoObj["isEnabled"];
 
-            document.getElementById("nameInputField").value = linkInfoObj["name"];
-            document.getElementById("urlInputField").value = linkInfoObj["url"];
-            document.getElementById("isEnabledCheckbox").checked = linkInfoObj["isEnabled"];
-
-            if(linkInfoObj["linkTypeId"] !== null){
-                document.getElementById("linkTypeIdSelect").value = linkInfoObj["linkTypeId"];
-            }
-            else{
-                document.getElementById("linkTypeIdSelect").value = 0;
-            }
+    //         if(linkInfoObj["linkTypeId"] !== null){
+    //             document.getElementById("linkTypeIdSelect").value = linkInfoObj["linkTypeId"];
+    //         }
+    //         else{
+    //             document.getElementById("linkTypeIdSelect").value = 0;
+    //         }
             
-            if(linkInfoObj["parentId"] !== null){
-                document.getElementById("parentIdSelect").value = linkInfoObj["parentId"];
-            }
-            else{
-                document.getElementById("parentIdSelect").value = 0;
-            }
+    //         if(linkInfoObj["parentId"]){
+    //             // var selectBoxParentId = document.getElementById("parentIdSelect");
+    //             // selectBoxParentId.value = linkInfoObj["parentId"];
+                
+    //             document.getElementById("parentIdSelect").value = linkInfoObj["parentId"];
+    //         }
+    //         else{
+    //             document.getElementById("parentIdSelect").selectedIndex  = "0";
+    //         }
 
-            document.getElementById("titleInputField").value = linkInfoObj["title"];
-            document.getElementById("useExternalUrlCheckbox").checked = linkInfoObj["useExternalUrl"];
-            document.getElementById("externalUrlInputField").value = linkInfoObj["externalUrl"];
-            document.getElementById("openInExternalWindowCheckbox").checked = linkInfoObj["openInExternalWindow"];
-            document.getElementById("sortOrderIdInputField").value = linkInfoObj["sortOrderId"];
-            // Header image needs to be set for now headerImgPreview
-            document.getElementById("headerImgPreview").setAttribute("src",  linkInfoObj["headerImage"]);
-            // document.getElementById("contentTextarea").value = linkInfoObj["content"];
-            CKEDITOR.instances['contentTextarea'].setData(linkInfoObj["content"]);
+    //         document.getElementById("titleInputField").value = linkInfoObj["title"];
+    //         document.getElementById("useExternalUrlCheckbox").checked = linkInfoObj["useExternalUrl"];
+    //         document.getElementById("externalUrlInputField").value = linkInfoObj["externalUrl"];
+    //         document.getElementById("openInExternalWindowCheckbox").checked = linkInfoObj["openInExternalWindow"];
+    //         document.getElementById("sortOrderIdInputField").value = linkInfoObj["sortOrderId"];
+    //         // Header image needs to be set for now headerImgPreview
+    //         document.getElementById("headerImgPreview").setAttribute("src",  linkInfoObj["headerImage"]);
+    //         // document.getElementById("contentTextarea").value = linkInfoObj["content"];
+    //         CKEDITOR.instances['contentTextarea'].setData(linkInfoObj["content"]);
 
 
-            document.getElementById("externalUrlInputField").disabled = !document.getElementById("useExternalUrlCheckbox").checked;
-            document.getElementById("openInExternalWindowCheckbox").disabled = !document.getElementById("useExternalUrlCheckbox").checked;
+    //         document.getElementById("externalUrlInputField").disabled = !document.getElementById("useExternalUrlCheckbox").checked;
+    //         document.getElementById("openInExternalWindowCheckbox").disabled = !document.getElementById("useExternalUrlCheckbox").checked;
 
-            console.log(response)
-        },
+    //         console.log(response)
+    //     },
 
-        error: function(response){
-            console.error(response.responseJSON);
-            window.location.replace(NOT_FOUND_404_PAGE_URL_ADMIN);
-        }
-    })
+    //     error: function(response){
+    //         console.error(response.responseJSON);
+    //         window.location.replace(NOT_FOUND_404_PAGE_URL_ADMIN);
+    //     }
+    // })
 
     $("#edit_link_info_form").submit(function (event) {
         event.preventDefault();
@@ -162,7 +314,8 @@ $(document).ready(function () {
             },
             processData: false,
             success: function (response){
-                console.log(response)
+                // console.log(response)
+                // window.location.replace(LIST_LINK_INFO_URL_ADMIN);
                 showToast("success", 'Updated Link Info successfully');
                 document.getElementById("update-btn").disabled = true;
             },

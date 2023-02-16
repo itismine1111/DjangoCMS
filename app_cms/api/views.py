@@ -365,6 +365,7 @@ class ListLinkTypeApi(APIView):
 
 
 
+
 class ListLinkInfoApiFilters(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = LinkInfoSerializer
@@ -376,6 +377,7 @@ class ListLinkInfoApiFilters(ListAPIView):
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
         count = len(response.data)
+        # cache.set("list_link_info", response.data)
         response.data = {
             'success': True,
             'message': 'List of LinkInfo objects',
@@ -387,12 +389,36 @@ class ListLinkInfoApiFilters(ListAPIView):
     def get_queryset(self):
         # This is a temporary solution to filter out objs with parentId null or blank
         # It should be implelented in filter but I cant seen to figure out how
-        if(self.request.GET.get("parentId") == "" or self.request.GET.get("parentId") == None):
+
+        parent_id = self.request.GET.get("parentId", None)
+
+        if(self.request.GET.get("parentId") == ""):
             return LinkInfo.objects.filter(parentId__isnull=True)
         return LinkInfo.objects.all()
+    
+        # parent_id = self.request.GET.get("parentId", None)
+        # print(f"PARENT ID : {parent_id}")
+        # print(f"PARENT ID TYPE: {type(int(parent_id))}")
+        # if(int(parent_id) == ''):
+        #     return LinkInfo.objects.filter(parentId__isnull=True)
+        
+        # else:
+        #     return LinkInfo.objects.all()
+
+        
 
 
-
+def cachedLinkedInfoApi(request):
+    data = cache.get("list_link_info")
+    if(data is not None):
+        return(ListLinkInfoApiFilters.as_view())
+    
+    return Response({
+            'success': True,
+            'message': 'List of LinkInfo objects',
+            'count': len(data),
+            'data': data, 
+        }, status=status.HTTP_200_OK)
 
 @csrf_exempt
 @api_view(['GET', 'POST'])

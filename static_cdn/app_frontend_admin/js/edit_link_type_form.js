@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    var changedLinkTypeObj = {};
     removeErrorParas();
 
     var linkTypeObj;
@@ -53,15 +53,14 @@ $(document).ready(function () {
         var object = {};
         formData.forEach(function(value, key){
             object[key] = value;
-
-
         });
 
         if(!editLinkTypeFormIsValid(object)){
             return;
         }
 
-        var json = JSON.stringify(object)
+        // var json = JSON.stringify(object)
+        var json = JSON.stringify(changedLinkTypeObj)
         console.warn(json);
   
         $.ajax({
@@ -73,8 +72,10 @@ $(document).ready(function () {
             },
             processData: false,
             success: function (response){
-                console.log(response)
-                window.location.replace(LIST_LINK_TYPE_URL_ADMIN);
+                // console.log(response)
+                // window.location.replace(LIST_LINK_TYPE_URL_ADMIN);
+                showToast("success", 'Updated Link Type successfully');
+                document.getElementById("update-btn").disabled = true;
             },
 
             error: function(response){
@@ -96,6 +97,23 @@ $(document).ready(function () {
     
         return(isValid);
       }  
+
+
+    var formFields = document.querySelectorAll(".linktype-form-field");
+    formFields.forEach(el => el.addEventListener("change", event=>{
+        alert("changed");
+        changedLinkTypeObj[event.target.getAttribute("name")] = event.target.value;
+        document.getElementById("update-btn").disabled = false;
+    }))
+
+
+    // Change event listener on form fields
+    var formFields = document.querySelectorAll(".edit-link-type-form-field");
+    formFields.forEach(el => el.addEventListener('change', event => {
+        changedLinkTypeObj[event.target.getAttribute("name")] = event.target.value;
+        document.getElementById("update-btn").disabled = false;
+          
+      }));
 
 });
 
