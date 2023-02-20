@@ -1,0 +1,38 @@
+{% extends 'app_dj_frontend_admin/base_admin.html' %}
+{% load static %}
+
+{% block linkinfoclass %}active{% endblock linkinfoclass %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-9"><h3>List Link Info</h3></div>
+    <div class="col-3 d-flex flex-row-reverse"><a class="btn btn-primary" href="{% url 'linktype-add' %}">Add Link Type</a></div>
+</div>
+<hr>
+
+
+    <p>{{ obj.id }}</p>
+    <p>{{ obj.name }}</p>
+
+
+{% endblock content %}
+
+{% block scripts %}
+  {% comment %} <script src="{% static 'app_frontend_admin/js/list_link_type.js' %}"></script> {% endcomment %}
+
+  <script>
+
+    function delLinkTypeBtnEventListener(id){
+        window.href
+        console.log(id);
+        console.log(typeof(id));
+    }
+
+
+  </script>
+
+
+
+{% endblock scripts %}

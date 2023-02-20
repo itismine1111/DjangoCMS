@@ -1,0 +1,202 @@
+{% extends 'app_dj_frontend_admin/base_admin.html' %}
+{% load static %}
+
+{% block linkinfoclass %}active{% endblock linkinfoclass %}
+
+{% block styles %}
+<style>
+  .handle{
+    cursor: grabbing;
+  }
+
+  ol  li.active a{
+    color: gray;
+    text-decoration: none;
+    cursor: text;
+    pointer-events: none;
+}
+</style>
+
+{% endblock styles %}
+
+{% block content %}
+
+<div class="row">
+  <!-- heading -->
+    <div class="col-3"><h3>List Link Info</h3></div>
+    <!-- parent id  -->
+    <div class="col-3 d-flex flex-row-reverse">
+      
+      <select class="form-select" aria-label="filterByType" id="filter-selectbox-parentid">
+        <option value="0" selected>Filter by parent</option>
+
+        {% for obj in  link_info_objs%}
+          <option value="{{obj.id}}">{{obj.name}}</option>
+        {% endfor %}
+
+        <!-- <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option> -->
+      </select>
+    </div> 
+    <!-- linktype -->
+    <div class="col-3 d-flex flex-row-reverse">
+      <select class="form-select" aria-label="filterByType" id="filter-selectbox">
+        <option value="0" selected>Filter by type..</option>
+        {% for obj in  link_type_objs%}
+          <option value="{{obj.id}}">{{obj.linkType}}</option>
+        {% endfor %}
+        <!-- <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option> -->
+      </select>      
+    </div> 
+    <!-- add new list info button -->
+    <div class="col-3 d-flex flex-row-reverse"><a class="btn btn-primary" href="{% url 'linkinfo-add' %}">Add Link Info</a></div>
+</div>
+<hr>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb" id="breadcrumb-header">
+    <!-- <li class="breadcrumb-item" data-parentid="0" data-parentName="All"><a href="#">All</a></li>
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Library</li> -->
+  </ol>
+</nav>
+
+<table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Link Type</th>
+        <th scope="col">Parent</th>
+        <th scope="col">Is Enabled</th>
+        {% comment %} <th scope="col">Sort Order</th> {% endcomment %}
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+        {% for obj in link_info_objs %}
+            <tr data-id="{{ obj.id }}">
+                <td style="width: 5%; padding-bottom: 5px">
+                <i class="bi bi-grip-vertical handle" style="font-size: 24px"></i>
+                </td>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ obj.name }}</td>
+                {% comment %} <td>{{ obj.linkType.linkType }}</td> {% endcomment %}
+                <td>{{ obj.linkTypeId }}</td>
+                {% if obj.parentId != None %}
+                  <td>{{ obj.parentId }}</td>
+                {% else %}
+                  <td>--</td>
+                {% endif %}
+                
+                {% if obj.isEnabled %}
+                  <td>&#10004;</td>
+                {% else %}
+                  <td style="color:red;">&#10060;</td>
+                {% endif %}
+
+                <td>
+                  <button type="button" class="btn btn-outline-secondary" onclick="delLinkInfoBtnEventListener(event, id={{ obj.id }}, url='{% url "dj-del-link-info" id=obj.id %}' )">
+                      <i class="bi bi-trash"></i></button
+                  ><button type="button" class="btn btn-outline-secondary" onclick="window.location.href='{% url 'dj-edit-link-info' id=obj.id %}'; console.log('clicked')">
+                      <i class="bi bi-pen"></i>
+                  </button>
+                  </td>
+            </tr>
+          {% endfor %}
+
+    </tbody>
+  </table>
+  
+
+{% endblock content %}
+
+
+
+{% block scripts %}
+<script>
+
+  function delLinkInfoBtnEventListener(event, id, url){
+      Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+          if (result.value) {
+              //alert('{{ csrf_token }}')
+              $.ajax({
+                  type: "DELETE",
+                  url: url,
+                  // data: {
+                  //    csrfmiddlewaretoken: '{{ csrf_token }}'
+                  // },                
+                  processData: false,
+                  headers: {
+                      'Content-Type':'application/json',
+                      "X-CSRFToken":'{{ csrf_token }}'
+                      //"X-CSRFToken": getCookie("csrftoken")
+                  },
+                  success: function(response){
+                      console.log(response);
+                      event.target.closest("tr").remove();
+                      showToast("success", 'Link Info Deleted Successfully!');
+                  },
+                  error: function(response){
+                      console.log(response);
+                      showToast("error", 'Error encountered while deleting Link Info');
+                  },
+              })
+          }
+      });
+  }
+
+  $( "#table-body" ).sortable({
+    handle: '.handle',
+    cursor: 'move',
+    // stop: sortEventHandler
+});
+
+var $sortableList = $("#table-body");
+var sortEventHandler = function(event, ui){
+    var listElements = document.querySelectorAll("#table-body tr");
+    var listElementIds = [];
+    for(let i=0; i<listElements.length; i++){
+        listElementIds.push(listElements[i].getAttribute("data-id"))
+    }
+    console.error("listElementIds");
+    console.log(listElementIds);
+
+    $.ajax({
+        type: "POST",
+        url: "{% url 'dj-link-info-set-sort-order' %}",
+        data: JSON.stringify({"linkInfoIdList": listElementIds}),
+        processData: false,
+        headers: {
+          'Content-Type':'application/json',
+          "X-CSRFToken":'{{ csrf_token }}'
+        },
+        success: function(response){
+            console.log(response);
+            showToast("success", "Order changed successfully");
+        }, 
+        error: function(response){
+            $sortableList.sortable('cancel');
+            showToast("error", "Error occured. Can't change the order");
+        }
+
+    });
+
+};
+$sortableList.on("sortstop", sortEventHandler);
+
+
+</script>
+{% endblock scripts %}

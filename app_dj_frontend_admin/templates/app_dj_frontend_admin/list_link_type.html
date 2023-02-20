@@ -1,0 +1,97 @@
+{% extends 'app_dj_frontend_admin/base_admin.html' %}
+{% load static %}
+
+{% block linktypeclass %}active{% endblock linktypeclass %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-9"><h3>List Link Type</h3></div>
+    <div class="col-3 d-flex flex-row-reverse"><a class="btn btn-primary" href="{% url 'linktype-add' %}">Add Link Type</a></div>
+</div>
+<hr>
+
+<table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="table-body" class="jquery-sortable">
+
+    {% for obj in objs %}
+    <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ obj.linkType }}</td>
+        <td>
+            <button type="button" class="btn btn-outline-secondary" onclick="delLinkTypeBtnEventListener(event, id={{ obj.id }}, url='{% url "dj-del-link-type" id=obj.id %}' )">
+                <i class="bi bi-trash"></i>
+            </button>
+
+            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='{% url 'dj-edit-link-type' id=obj.id %}'; console.log('clicked')" >
+                <i class="bi bi-pen"></i>
+            </button>
+            
+        </td>
+      </tr>
+
+    {% endfor %}
+
+      
+    </tbody>
+  </table>
+
+
+{% endblock content %}
+
+{% block scripts %}
+
+  <script>
+
+    function delLinkTypeBtnEventListener(event, id, url){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                //alert('{{ csrf_token }}')
+                $.ajax({
+                    type: "DELETE",
+                    url: url,
+                    // data: {
+                    //    csrfmiddlewaretoken: '{{ csrf_token }}'
+                    // },                
+                    processData: false,
+                    headers: {
+                        'Content-Type':'application/json',
+                        "X-CSRFToken":'{{ csrf_token }}'
+                        //"X-CSRFToken": getCookie("csrftoken")
+                    },
+                    success: function(response){
+                        console.log(response);
+                        event.target.closest("tr").remove();
+                        showToast("success", 'Link Type Deleted Successfully!');
+                    },
+                    error: function(response){
+                        console.log(response);
+                        showToast("error", 'Error encountered while deleting Link Type');
+                    },
+                })
+            }
+        });
+    }
+
+
+
+
+
+{% endblock scripts %}

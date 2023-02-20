@@ -28,6 +28,7 @@ urlpatterns = [
     path("", include("app_frontend.urls")),
     path("api/cms/", include("app_cms.api.urls")),
     path("cms/admin/", include("app_frontend_admin.urls")),
+    path("dj/cms/admin/", include("app_dj_frontend_admin.urls")),
     path("admin/", admin.site.urls),
     path("swagger/cms/", swagger_schema_view)
 

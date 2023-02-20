@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"/>
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- iziToast css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% block styles %}{% endblock styles %}
+    <title>Admin Panel</title>
+    <style>
+      .active a span{
+        text-decoration: underline;
+      }
+
+      .mainContentDiv{
+        position: relative;
+      }
+    
+      .loaderContainer {
+        position: absolute;
+          top:0;
+          left:0;
+          width:100%;
+          height:100%;
+          background: white;
+          padding-top: 200px;
+          display: none;
+          /* background:red; */
+      }
+    
+    </style>
+
+    
+
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img
+            src="https://banner2.cleanpng.com/20180504/gew/kisspng-squarespace-blog-logo-computer-icons-5aec32eba669c9.0370267215254289716816.jpg"
+            alt=""
+            width="30"
+            height="24"
+            class="d-inline-block align-text-top"
+          />
+          Admin Page
+        </a>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">
+          <div
+            class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100"
+          >
+            {% comment %} <a
+              href="/"
+              class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
+              style="color: black"
+            >
+              <span class="fs-5 d-none d-sm-inline">Menu</span>
+            </a> {% endcomment %}
+            <span class="fs-5 d-none d-sm-inline" style="color: black">Menu</span>
+            <ul
+              class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+              id="menu"
+            >
+              <li class="nav-item {% block linktypeclass %}{% endblock linktypeclass %}">
+                <a href="{% url 'dj-list-link-type' %}" class="nav-link align-middle px-0">
+                  <i class="bi bi-caret-right" style="font-size: 28px;"></i>
+                  <span class="ms-1 d-none d-sm-inline">Link Types </span>
+                </a>
+              </li>
+
+              <li class="nav-item {% block linkinfoclass %}{% endblock linkinfoclass %}">
+                <a href="{% url 'dj-list-link-info' %}" class="nav-link px-0 align-middle">
+                  <i class="bi bi-link-45deg" style="font-size: 28px;"></i>
+                  <span class="ms-1 d-none d-sm-inline">Link Info</span></a
+                >
+              </li>
+                
+              {% comment %} <li>
+                <a
+                  href="#submenu1"
+                  data-bs-toggle="collapse"
+                  class="nav-link px-0 align-middle"
+                >
+                  <i class="fs-4 bi-speedometer2"></i>
+                  <span class="ms-1 d-none d-sm-inline">Dashboard</span>
+                </a>
+                <ul
+                  class="collapse show nav flex-column ms-1"
+                  id="submenu1"
+                  data-bs-parent="#menu"
+                >
+                  <li class="w-100">
+                    <a href="#" class="nav-link px-0">
+                      <span class="d-none d-sm-inline">Item</span> 1
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" class="nav-link px-0">
+                      <span class="d-none d-sm-inline">Item</span> 2
+                    </a>
+                  </li>
+                </ul>
+              </li> {% endcomment %}
+              
+            </ul>
+            {% comment %}
+            <hr />
+            <div class="dropdown pb-4">
+              <a
+                href="#"
+                class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                id="dropdownUser1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src="https://github.com/mdo.png"
+                  alt="hugenerd"
+                  width="30"
+                  height="30"
+                  class="rounded-circle"
+                />
+                <span class="d-none d-sm-inline mx-1">loser</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                <li><a class="dropdown-item" href="#">New project...</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li>
+              </ul>
+            </div>
+            {% endcomment %}
+          </div>
+        </div>
+        <div class="col py-3 mainContentDiv">
+
+          <!-- loader -->
+          <div class="text-center loaderContainer" id="loader">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          
+          
+          {% block heading %}{% endblock heading %}
+          {% block content %}{% endblock content %}
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!--My Constants-->
+    {% comment %} <script type="text/javascript" src="{% static 'app_frontend_admin/js/constants.js' %}"></script> {% endcomment %}
+    <!-- Bootstrap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+    <!-- Jquery-->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <!-- Jquery UI -->
+    <script
+      src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
+      integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY="
+      crossorigin="anonymous"
+    ></script>
+    <!--SweetALert2-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--izitoast-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+    
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+      iziToast.settings({
+        timeout: 3000, // default timeout
+        resetOnHover: true,
+        // icon: '', // icon class
+        transitionIn: 'flipInX',
+        transitionOut: 'flipOutX',
+        position: 'bottomRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
+        onOpen: function () {
+          console.log('callback onOpen!');
+        },
+        onClose: function () {
+          console.log("callback onClose!");
+        }
+      });
+
+      
+    
+
+      function showToast(type, message, icon=null, title=null, timeout=null){
+        if(type==="success"){
+          if(icon === null){
+            icon = "bi bi-check-l";
+          }
+          if(title === null){
+            title = "OK";
+          }
+          if(timeout === null){
+            timeout = 1500;
+          }
+          iziToast.success({
+              timeout: 1500, 
+              icon: "bi bi-arrow-up-right-circle-fill", 
+              title: title, 
+              message: message
+          });
+        }
+
+        else if(type==="error"){
+          if(icon === null){
+            icon = "bi bi-exclamation-octagon-fill";
+          }
+          if(title === null){
+            title = "Error";
+          }
+          if(timeout === null){
+            timeout = 2000;
+          }
+          iziToast.error({
+              timeout: 2000, 
+              icon: "bi bi-exclamation-octagon-fill", 
+              title: title, 
+              message: message
+          });
+        }
+      }
+
+      function showErrorMessage(fieldName, errorMessageArray){
+        var errorPara = document.createElement("p");
+        errorPara.classList.add("error");
+        errorPara.setAttribute("id", fieldName+"Errors");
+        errorPara.style.color = "red";
+        errorPara.style.fontSize = "16px";
+    
+        for(let i=0; i< errorMessageArray.length; i++){
+            errorPara.innerHTML = errorPara.innerHTML + "<br>" + errorMessageArray[i];
+        }
+    
+        var field = document.getElementsByName(fieldName)[0];
+        field.parentNode.insertBefore(errorPara, field.nextSibling);
+      }
+    
+    
+      function removeErrorParas(){
+        let errorPara = document.querySelectorAll('.error');
+        errorPara.forEach(element => {
+         element.remove();
+        });
+        }
+    
+    
+        function handleBackendErrors(object){
+            // console.error("HANDLING BACKEND ERRORS");
+            // console.error(object);
+    
+            for (const [key, value] of Object.entries(object)) {
+                // console.log(key, value);
+                showErrorMessage(key, value);
+            }
+        }
+    </script>
+
+
+    {% block scripts %}{% endblock scripts %}
+    
+  </body>
+</html>
