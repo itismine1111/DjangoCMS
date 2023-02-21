@@ -1,9 +1,12 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.decorators.csrf import requires_csrf_token
 from django.db import transaction
-
+from django.forms.models import model_to_dict
 from app_cms.models import LinkType, LinkInfo
+
+from .forms import LinkTypeForm
 
 # Create your views here.
 
@@ -134,3 +137,33 @@ def set_sorting_order(request):
             return JsonResponse({'success':False,'message':f"Can't update Link info sort order"}, status=500)
 
         return JsonResponse({'success':True,'message':f"Sort order of Link Info's updated successfully"}, status=200)
+    
+
+
+def post_link_type_form(request):
+    if request.method == "POST":
+        form = LinkTypeForm(request.POST)
+        if(form.is_valid()):
+            # Process the data
+            link_type_obj = LinkType()
+            link_type_obj.linkType = form.cleaned_data['linkType']
+            link_type_obj.save()
+            return redirect(reverse('dj-list-link-type'))
+    else:  
+        form = LinkTypeForm()
+    
+    return render(request, "app_dj_frontend_admin/add.html", {"form": form})
+
+
+def post_edit_link_type_form(request, id):
+    obj = LinkType.objects.get(id=id)
+    if request.method == "POST":
+        form = LinkTypeForm(request.POST)
+        if(form.is_valid()):
+            obj.linkType = form.cleaned_data['linkType']
+            obj.save()
+            return redirect(reverse('dj-list-link-type'))
+    else:  
+        form = LinkTypeForm(initial=model_to_dict(obj))
+    
+    return render(request, "app_dj_frontend_admin/edit.html", {"form": form})
