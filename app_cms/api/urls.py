@@ -8,6 +8,7 @@ from .views import (
     ListLinkInfoApiFilters,
     set_sorting_order,
     get_link_infos_tree_view,
+    get_link_infos_tree_view1,
     cachedLinkedInfoApi
 )
 
@@ -20,5 +21,6 @@ urlpatterns = [
     path("linkinfo/list/", ListLinkInfoApiFilters.as_view(), name="api-listLinkInfoFilters"),
     # path("linkinfo/list/", cachedLinkedInfoApi, name="api-listLinkInfoFilters"),
     path("linkinfo/sort-order-ids/", set_sorting_order, name="api-listLinkInfoSortOrderIds"),
-    path("linkinfo/treeview/", get_link_infos_tree_view, name="api-listLinkInfoTreeView"),
+    # path("linkinfo/treeview/", get_link_infos_tree_view, name="api-listLinkInfoTreeView"),
+    path("linkinfo/treeview/", get_link_infos_tree_view1, name="api-listLinkInfoTreeView"),
 ]

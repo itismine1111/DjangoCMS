@@ -15,10 +15,10 @@ $(document).ready(function () {
             console.log(response["data"]);
             // for(let i=0; i<response["data"].length; i++){
             //     console.log("Creating Links for link: " + response["data"][i]["name"]);
-            //     createAndAppendLinks(response["data"][i], parent_div_id="header-navbar-ul");
+            //     createHeaderLinks(response["data"][i], parent_div_id="header-navbar-ul");
             // }
-            createAndAppendLinks(response["data"], parent_div_id="header-navbar-ul");
-            // createAndAppendLinks(data_list = [], parent_div_id="header-navbar-ul");
+            createHeaderLinks(response["data"], parent_div_id="header-navbar-ul");
+            // createHeaderLinks(data_list = [], parent_div_id="header-navbar-ul");
         },
 
         error: function(response){
@@ -28,7 +28,7 @@ $(document).ready(function () {
     })
 
 
-    function createAndAppendLinks(data_list, parent_div_id){
+    function createHeaderLinks(data_list, parent_div_id){
         // console.log("ParentId : " + data["parentId"] );
 
         if(!data_list || data_list.length === 0){
@@ -76,7 +76,7 @@ $(document).ready(function () {
                     ul_submenu.setAttribute("class", "dropdown-menu");
                     li_item.appendChild(ul_submenu);
                     // console.log(data["children"]);
-                    createAndAppendLinks(data["children"], parent_div_id=ul_submenu.getAttribute("id"));
+                    createHeaderLinks(data["children"], parent_div_id=ul_submenu.getAttribute("id"));
                 }
 
             }
@@ -118,7 +118,7 @@ $(document).ready(function () {
             //         ul_submenu.setAttribute("class", "submenu dropdown-menu");
             //         li_item.appendChild(ul_submenu);
             //         console.log(data["children"]);
-            //         createAndAppendLinks(data["children"], parent_div_id=ul_submenu.getAttribute("id"));
+            //         createHeaderLinks(data["children"], parent_div_id=ul_submenu.getAttribute("id"));
             //     }
             // }
         }
@@ -130,7 +130,7 @@ $(document).ready(function () {
     }
 
 
-    // function createAndAppendLinks(data, parent_div_id){
+    // function createHeaderLinks(data, parent_div_id){
     //     console.log("ParentId : " + data["parentId"] );
 
     //     if(!data || data.length === 0){
@@ -172,7 +172,7 @@ $(document).ready(function () {
     //             li_item.appendChild(ul_submenu);
     //             console.log(data["children"]);
     //             for(let i=0; i< data["children"].length; i++){
-    //                 createAndAppendLinks(data["children"][i], parent_div_id=ul_submenu.getAttribute("id"));
+    //                 createHeaderLinks(data["children"][i], parent_div_id=ul_submenu.getAttribute("id"));
     //             }
     //         }
 
@@ -213,7 +213,7 @@ $(document).ready(function () {
     //             li_item.appendChild(ul_submenu);
     //             console.log(data["children"]);
     //             for(let i=0; i< data["children"].length; i++){
-    //                 createAndAppendLinks(data["children"][i], parent_div_id=ul_submenu.getAttribute("id"));
+    //                 createHeaderLinks(data["children"][i], parent_div_id=ul_submenu.getAttribute("id"));
     //             }
     //         }
     //     }

@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     "django_filters",
     'rest_framework_swagger',
     "ckeditor",
+    "crispy_forms",
+    'widget_tweaks',
     # My Apps
     "app_accounts",
     "app_cms",
@@ -54,6 +56,9 @@ INSTALLED_APPS = [
     # django-cleanup needs to stay at bottom (3rd Party)
     'django_cleanup.apps.CleanupConfig',
 ]
+
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -70,7 +75,7 @@ ROOT_URLCONF = "src.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -149,7 +154,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 REST_FRAMEWORK = { 
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' 
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'app_cms.api.backends.CsrfExemptSessionAuthentication',]
     }
 
 CACHES = {
@@ -158,3 +165,7 @@ CACHES = {
       'LOCATION': os.path.join(BASE_DIR, "tmp", "django_cache"),
    }
 }
+
+LOGIN_URL = '/cms/accounts/login/'
+LOGIN_REDIRECT_URL = "/cms/admin/"
+LOGOUT_REDIRECT_URL = '/cms/accounts/login/'

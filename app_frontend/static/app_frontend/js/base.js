@@ -1,9 +1,11 @@
 
 $(document).ready(function () {
     var navbarUl = document.getElementById("header-navbar-ul");
+
+
     $.ajax({
         type: "GET",
-        url: "http://127.0.0.1:8000/api/cms/linkinfo/treeview/",
+        url: API_LIST_LINK_INFO_TREE_VIEW_URL,
         processData: false,
         beforeSend: function(xhr, status){
             $('#loader').show();
@@ -13,12 +15,9 @@ $(document).ready(function () {
         },
         success: function (response){
             console.log(response["data"]);
-            // for(let i=0; i<response["data"].length; i++){
-            //     console.log("Creating Links for link: " + response["data"][i]["name"]);
-            //     createHeaderLinks(response["data"][i], parent_div_id="header-navbar-ul");
-            // }
-            createHeaderLinks(response["data"], parent_div_id="header-navbar-ul");
-            // createHeaderLinks(data_list = [], parent_div_id="header-navbar-ul");
+            createHeaderLinks(response["data"]["Header"], parent_div_id="header-navbar-ul");
+
+            createFooterLinks(response["data"]["Footer"]);
         },
 
         error: function(response){
@@ -28,11 +27,12 @@ $(document).ready(function () {
     })
 
 
+
     function createHeaderLinks(data_list, parent_div_id){
         // console.log("ParentId : " + data["parentId"] );
 
         if(!data_list || data_list.length === 0){
-            console.log("NO DATA RETURNING");
+            // console.log("NO DATA RETURNING");
             return;
         }
 
@@ -53,7 +53,7 @@ $(document).ready(function () {
 
                 // If no children are present -> Make it a link
                 if(data["children"].length === 0){
-                    console.log("Link: "+ data["name"] + ", ParentId: " + data["parentId"] + ", Children: False", ", ParentDiv: "+ parent_div_id);
+                    // console.log("Link: "+ data["name"] + ", ParentId: " + data["parentId"] + ", Children: False", ", ParentDiv: "+ parent_div_id);
                     li_item.classList.add("nav-item");
                     a.classList.add("nav-link");
                     a.setAttribute("data-url", data["url"]);
@@ -64,7 +64,7 @@ $(document).ready(function () {
 
                 // If children are present -> Make a submenu
                 else{
-                    console.log("Link: "+ data["name"] + ", ParentId: " + data["parentId"] + ", Children: True", ", ParentDiv: "+ parent_div_id);
+                    // console.log("Link: "+ data["name"] + ", ParentId: " + data["parentId"] + ", Children: True", ", ParentDiv: "+ parent_div_id);
                     li_item.setAttribute("class", "nav-item dropdown");
                     a.setAttribute("class", "nav-link dropdown-toggle");
                     a.setAttribute("data-bs-toggle", "dropdown");
@@ -92,8 +92,8 @@ $(document).ready(function () {
                 li_item.appendChild(a);
                 document.getElementById(parent_div_id).appendChild(li_item);
 
-                console.log("REACHED HERE");
-                console.log(data["children"]);
+                // console.log("REACHED HERE");
+                // console.log(data["children"]);
                 // return
 
                 // If no children -> Make a simple link inside a submenu
@@ -114,18 +114,60 @@ $(document).ready(function () {
                     ul_submenu.setAttribute("id", li_item.getAttribute("id") + "_ul_submenu");
                     ul_submenu.setAttribute("class", "submenu dropdown-menu");
                     li_item.appendChild(ul_submenu);
-                    console.log(data["children"]);
+                    // console.log(data["children"]);
                     createHeaderLinks(data["children"], ul_submenu.getAttribute("id"));
                 }
             }
         }
 
-        
-
-        
-
     }
 
+    function createFooterLinks(data_list){
+        for(let i=0; i< data_list.length; i++){
+            let noParentsNoChildrenObjs = [];
+            let notNullParentObjs = [];
+            if(data_list[i].parentId === null && data_list[i].children.length === 0){
+                noParentsNoChildrenObjs.push(data_list[i]);
+            }
+            else{
+                notNullParentObjs.push(data_list[i]);
+            }
+
+        }
+    }
+
+
+
+   
+
+    function createFooterSection(list, parent_name){
+        // console.log("list")
+        // console.log(list)
+        let footer_row = document.getElementById("footer-div-row");
+        let section_div = document.createElement("div");
+        section_div.setAttribute("class", "col-md-2 col-lg-2 col-xl-2 mx-auto mt-3;")
+
+        let section_heading = document.createElement("h6");
+        section_heading.setAttribute("class", "text-uppercase mb-4 font-weight-bold");
+        section_heading.innerHTML = parent_name;
+
+        section_div.appendChild(section_heading);
+
+        for( let i=0; i< list.length; i++){
+            let p = document.createElement("p");
+            let a = document.createElement("a");
+            a.setAttribute("class", "text-white");
+            a.setAttribute("href", "https://www.google.com");
+            a.innerHTML = list[i]["name"];
+
+            p.appendChild(a);
+
+            section_div.appendChild(p);
+        }
+
+        footer_row.appendChild(section_div);
+
+    }
 
 
     function navLinkAddEventListener(id){
@@ -139,6 +181,10 @@ $(document).ready(function () {
         })
         // console.log("adding event listenter to: " + id);
     }
+    
+
+    // var list = [{"name": "link1"}, {"name": "link2"}, {"name": "link3"}];
+    // createFooterSection(list, "Naman Section");
 
 
 });

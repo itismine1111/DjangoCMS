@@ -6,6 +6,7 @@ const API_LINK_TYPE_URL = API_BASE_URL + "linktype/";
 const API_LINK_INFO_URL = API_BASE_URL + "linkinfo/";
 const API_LIST_LINK_TYPE_URL = API_BASE_URL + "linktype/list/";
 const API_LIST_LINK_INFO_URL = API_BASE_URL + "linkinfo/list/";
+const API_LIST_LINK_INFO_TREE_VIEW_URL = API_BASE_URL + "linkinfo/treeview/";
 
 // USELESS??
 const API_BASE_URL_ADMIN = BASE_URL + "api/cms/";

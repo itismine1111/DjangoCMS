@@ -163,6 +163,8 @@ def post_edit_link_type_form(request, id):
             obj.linkType = form.cleaned_data['linkType']
             obj.save()
             return redirect(reverse('dj-list-link-type'))
+        else:
+            return render(request, "app_dj_frontend_admin/edit.html", {"form": form})
     else:  
         form = LinkTypeForm(initial=model_to_dict(obj))
     

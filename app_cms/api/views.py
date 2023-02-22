@@ -428,7 +428,7 @@ def set_sorting_order(request):
     objs = []
     error_occured = False
     objIdList = request.data.get("linkInfoIdList")
-    # print("objIdList")
+    print("objIdList")
     # print(objIdList)
     # return Response({"success": True}, status=status.HTTP_200_OK)
     # return Response({"success": False}, status=status.HTTP_400_BAD_REQUEST)
@@ -552,6 +552,71 @@ def get_link_infos_tree_view(request):
         "data" : treeview
     }, status=status.HTTP_200_OK)
 
+
+
+@api_view(['GET'])
+def get_link_infos_tree_view1(request):
+
+    response_list_dict = {}
+    found_in_cache = True
+    # look for list_link_info_tree_view_obj_dict object in cache
+    cached_data = cache.get("list_link_info_tree_view_obj_dict")
+
+    if cached_data is not None:
+        response_list_dict = cached_data
+
+    # If not found, create object, save in cache and return response
+    else:
+        found_in_cache = False
+        linkTypeObjs = LinkType.objects.all();
+
+        for i in linkTypeObjs:
+            datalist = []
+            objs = LinkInfo.objects.filter(isEnabled=True, linkTypeId=i.id).order_by("sortOrderId")
+
+            for obj in objs:
+                temp = {}
+                temp["id"] = obj.id
+                temp["name"] = obj.name
+                temp["url"] = obj.url
+
+                if(obj.linkTypeId is not None):
+                    temp["linkTypeId"] = obj.linkTypeId.id
+                else:
+                    temp["linkTypeId"] = None
+
+                if(obj.parentId is not None):
+                    temp["parentId"] = obj.parentId.id
+                else:
+                    temp["parentId"] = None
+
+                temp["useExternalUrl"] = obj.useExternalUrl
+                temp["externalUrl"] = obj.externalUrl
+                temp["openInExternalWindow"] = obj.openInExternalWindow
+                temp["sortOrderId"] = obj.sortOrderId
+                temp["children"] = []
+                datalist.append(temp)
+
+            # Treeview is a list
+            treeview_list = build_tree(datalist)
+            print(i.linkType)
+            response_list_dict[i.linkType] = treeview_list
+
+        cache.set("list_link_info_tree_view_obj_dict", response_list_dict)
+
+        # with open("tempfiles/listInfoTreeViewOutput.txt", mode="w") as file_object:
+        #     pprint(treeview, stream=file_object)
+    
+        # print(datalist)   
+        # print(json.dumps(treeview))
+
+    # print("FOUND IN CACHE") if(found_in_cache) else print("NOT FOUND IN CACHE")
+
+    return Response({
+        "success": True,
+        "message": "List of all Link infos in tree view", 
+        "data" : response_list_dict
+    }, status=status.HTTP_200_OK)
 
 
 

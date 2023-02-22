@@ -69,6 +69,10 @@
             /* z-index: 10; */
             /* background:red; */
         }
+
+        a, .nav-item, .nav-link{
+          cursor: pointer;
+        }
   
     </style>
   </head>
@@ -164,16 +168,126 @@
       <!-- Begin page content -->
       <main class="flex-shrink-0">
         <div class="container" id="page-content">
-          PAGE CONTENT
+          {% block content %}
+            <h2>Select a link to go to the page</h2>
+          {% endblock content %}
+          
         </div>
       </main>
 
       
-      <footer class="footer mt-auto py-3 bg-light">
-        <div class="container"> 
-          FOOTER
+      <!-- Remove the container if you want to extend the Footer to full width. -->
+<div class="container my-5">
+  <!-- Footer -->
+  <footer
+          class="text-center text-lg-start text-white"
+          style="background-color: #45526e"
+          >
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+      <!-- Section: Links -->
+      <section class="">
+        <!--Grid row-->
+        <div class="row" id="footer-div-row">
+          <!-- Grid column -->
+          {% comment %} <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">
+              Company name
+            </h6>
+            <p>
+              Here you can use rows and columns to organize your footer
+              content. Lorem ipsum dolor sit amet, consectetur adipisicing
+              elit.
+            </p>
+          </div> {% endcomment %}
+          <!-- Grid column -->
+
+          {% comment %} <hr class="w-100 clearfix d-md-none" /> {% endcomment %}
+
+          <!-- Grid column -->
+          <!-- <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
+            <p>
+              <a class="text-white">MDBootstrap</a>
+            </p>
+            <p>
+              <a class="text-white">MDWordPress</a>
+            </p>
+            <p>
+              <a class="text-white">BrandFlow</a>
+            </p>
+            <p>
+              <a class="text-white">Bootstrap Angular</a>
+            </p>
+          </div>
+          <hr class="w-100 clearfix d-md-none" /> -->
+          
+
+      </section>
+      <!-- Section: Links -->
+
+      <hr class="my-3">
+
+      <!-- Section: Copyright -->
+      <section class="p-3 pt-0">
+        <div class="row d-flex align-items-center">
+          <!-- Grid column -->
+          <div class="col-md-7 col-lg-8 text-center text-md-start">
+            <!-- Copyright -->
+            <div class="p-3">
+              © 2023 Copyright:
+              <a class="text-white" href="{% url 'user-index' %}"
+                 >DjangoCMS</a
+                >
+            </div>
+            <!-- Copyright -->
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          {% comment %} <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+            <!-- Facebook -->
+            <a
+               class="btn btn-outline-light btn-floating m-1"
+               class="text-white"
+               role="button"
+               ><i class="fab fa-facebook-f"></i
+              ></a>
+
+            <!-- Twitter -->
+            <a
+               class="btn btn-outline-light btn-floating m-1"
+               class="text-white"
+               role="button"
+               ><i class="fab fa-twitter"></i
+              ></a>
+
+            <!-- Google -->
+            <a
+               class="btn btn-outline-light btn-floating m-1"
+               class="text-white"
+               role="button"
+               ><i class="fab fa-google"></i
+              ></a>
+
+            <!-- Instagram -->
+            <a
+               class="btn btn-outline-light btn-floating m-1"
+               class="text-white"
+               role="button"
+               ><i class="fab fa-instagram"></i
+              ></a>
+          </div> {% endcomment %}
+          <!-- Grid column -->
         </div>
-      </footer>
+      </section>
+      <!-- Section: Copyright -->
+    </div>
+    <!-- Grid container -->
+  </footer>
+  <!-- Footer -->
+</div>
+<!-- End of .container -->
     
 
     <!--My Constants-->
@@ -286,6 +400,7 @@
         }
     </script>
 
+    <script type="text/javascript" src="{% static 'app_frontend/js/base.js' %}"></script>
     {% block scripts %}{% endblock scripts %}
 
    

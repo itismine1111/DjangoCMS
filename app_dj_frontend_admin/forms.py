@@ -6,6 +6,9 @@ class LinkTypeForm(forms.Form):
     # required_css_class = 'form-control'
     linkType = forms.CharField(label="Link type Name", max_length=100)
 
+    def validate():
+        pass
+
 
 class LinkInfoForm(forms.ModelForm):
 

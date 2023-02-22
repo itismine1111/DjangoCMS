@@ -86,11 +86,21 @@
 
 
 
-
-
 [] User Authentication System
     [] Login
     [] Logout
     [] Signup 
     [] Forgot password
     [] Reset Password
+
+
+
+
+[] URGENT:
+    [-] Errors not showing in login page
+    [-] POST API's not working
+    [-] Edit CKEditor setting to include only a few options
+    [] Links nor working on homepage
+    [] Redirect to a custom 404 page
+    [] Make it live
+    
