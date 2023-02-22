@@ -1,6 +1,19 @@
 {% extends 'app_frontend/base.html' %}
 {% load static %}
 
+{% block content %}
+    {% autoescape off %}
+
+        {{page_data}}
+
+    {% endautoescape %}
+    
+{% endblock content %}
+
+
+
 {% block scripts %}
     <script type="text/javascript" src="{% static 'app_frontend/js/show_links_page.js' %}"></script>
+    <script>
+    </script>
 {% endblock scripts %}

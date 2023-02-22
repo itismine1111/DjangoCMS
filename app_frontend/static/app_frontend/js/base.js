@@ -175,8 +175,13 @@ $(document).ready(function () {
         a.addEventListener("click", function(event){
             event.preventDefault()
             // window.href = a.getAttribute("data-url");
-            let abc = a.closest("li").getAttribute("id");
-            console.log("THE ID OF <li> is : " + abc)
+            let linkinfoid = a.closest("li").getAttribute("id");
+            let linkinfourl = a.getAttribute("data-url");
+            console.log("THE ID OF <li> is : " + linkinfoid)
+            
+            let newurl = BASE_URL + String(linkinfoid) + "/" + linkinfourl;
+            window.location.href = newurl;
+
 
         })
         // console.log("adding event listenter to: " + id);
