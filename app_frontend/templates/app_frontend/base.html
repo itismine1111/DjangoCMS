@@ -17,7 +17,7 @@
     <!-- iziToast css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {% block styles %}{% endblock styles %}
-    <title>Admin Panel</title>
+    <title>{% block title %}DjangoCMS{% endblock title %} </title>
     <style>
         main > .container {
             padding: 60px 15px 0;
@@ -92,7 +92,7 @@
         <!-- ============= COMPONENT ============== -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">DjangoCMS</a>
+            <a class="navbar-brand" href="{% url 'user-index' %}">DjangoCMS</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav"  aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>

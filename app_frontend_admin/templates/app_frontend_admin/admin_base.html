@@ -282,7 +282,7 @@
                 showErrorMessage(key, value);
             }
         }
-
+{% comment %} 
         CKEDITOR.editorConfig = function( config ) {
           config.toolbarGroups = [
             { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
@@ -303,7 +303,13 @@
           ];
         
           config.removeButtons = 'Save,Templates,NewPage,Preview';
-        };
+        }; {% endcomment %}
+        CKEDITOR_CONFIGS = {
+          'default': {
+               "removePlugins": "exportpdf",
+          }
+      }
+      
     </script>
 
 

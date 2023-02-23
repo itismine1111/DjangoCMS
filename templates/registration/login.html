@@ -48,9 +48,9 @@
                   <div class="mb-3">
                     <div class="mb-2 w-100">
                       <label class="text-muted" for="password">{{form.password.label_tag}}</label>
-                      <a href="{% url 'password_reset' %}" class="float-end">
+                      {% comment %} <a href="{% url 'password_reset' %}" class="float-end">
                         Forgot Password?
-                      </a>
+                      </a> {% endcomment %}
                     </div>
                     {{form.password|add_class:'form-control'}}
                     {{form.password.errors}}

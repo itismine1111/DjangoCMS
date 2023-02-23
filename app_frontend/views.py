@@ -1,21 +1,31 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.urls import reverse
 from app_cms.models import LinkInfo
 
 # Create your views here.
 
+def error404(request):
+        data = {}
+        return render(request,'app_frontend/404.html', data)
+
 def index(request):
     return render(request, "app_frontend/index.html")
 
-def show_links_page(request, id, slug):
-    context = {}
-    try:
-        obj = LinkInfo.objects.get(id=id)
-    except LinkInfo.DoesNotExist:
-        obj = None
+
+def show_links_page(request, url):
+    print("url")
+    print(url)  
+    if url == "" or url == "null" or url == "#":
+        return redirect('error404')
     
-    if obj is not None:
-        print(obj)
-        context["page_data"] = obj.content
-        return render(request, "app_frontend/show_links_page.html", context={"page_data": obj.content})
+    objList = LinkInfo.objects.filter(url__exact=url)
+    print(len(objList))
+
+
+    if len(objList) != 0:
+        print("REACHING HERE")
+        obj = objList[0]
+        return render(request, "app_frontend/show_links_page.html", context={"page_data": obj.content, "title": obj.title})
     
-    return render(request, "app_frontend/index.html")
+    return redirect('error404')
+    # return render(request, "app_frontend/404.html")

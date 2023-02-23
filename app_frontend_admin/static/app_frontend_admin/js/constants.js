@@ -21,3 +21,6 @@ const ADD_LINK_TYPE_URL_ADMIN = BASE_URL_ADMIN + "linktype/add/";
 const ADD_LINK_INFO_URL_ADMIN = BASE_URL_ADMIN + "linkinfo/add/";
 const LIST_LINK_TYPE_URL_ADMIN = BASE_URL_ADMIN + "linktype/list/";
 const LIST_LINK_INFO_URL_ADMIN = BASE_URL_ADMIN + "linkinfo/list/";
+
+const NOTFOUND404 = BASE_URL + "404notfound/";
+const CMS_PAGE_BASE_URL= BASE_URL + "page/";
