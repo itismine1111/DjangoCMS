@@ -220,7 +220,7 @@ $(document).ready(function () {
                 document.getElementById("headerImgPreview").setAttribute("src",  linkInfoObj["headerImage"]);
                 // document.getElementById("contentTextarea").value = linkInfoObj["content"];
                 CKEDITOR.instances['contentTextarea'].setData(linkInfoObj["content"]);
-    
+                // alert(linkInfoObj["content"]);
     
                 document.getElementById("externalUrlInputField").disabled = !document.getElementById("useExternalUrlCheckbox").checked;
                 document.getElementById("openInExternalWindowCheckbox").disabled = !document.getElementById("useExternalUrlCheckbox").checked;
@@ -301,7 +301,7 @@ $(document).ready(function () {
         removeErrorParas();
         var json = JSON.stringify(changedLinkInfoObj)
         // console.warn(json);
-        if(!editLinkInfoFormIsValid(object)){
+        if(!editLinkInfoFormIsValid(changedLinkInfoObj)){
             return;
         }
   
@@ -402,6 +402,12 @@ $(document).ready(function () {
             changedLinkInfoObj["openInExternalWindow"] = event.target.checked;
         }
 
+        // else if(event.target.getAttribute("id") === "contentTextarea"){
+
+        //     changedLinkInfoObj["content"] = CKEDITOR.instances['contentTextarea'].getData();
+        //     alert(changedLinkInfoObj["content"]);
+        // }
+
         else{
             changedLinkInfoObj[event.target.getAttribute("name")] = event.target.value;
         }
@@ -411,6 +417,15 @@ $(document).ready(function () {
           
       }));
 
+
+      let ckeditor = CKEDITOR.instances['contentTextarea'];
+      ckeditor.on('change', function(e) {
+       changedLinkInfoObj["content"] = CKEDITOR.instances['contentTextarea'].getData();
+    //    console.log(changedLinkInfoObj["content"]);
+       document.getElementById("update-btn").disabled = false;
+
+    }); 
+    
 
   function editLinkInfoFormIsValid(object){
     isValid = true;

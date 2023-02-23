@@ -79,6 +79,7 @@ $(document).ready(function () {
         });
         object["headerImage"] = headerImgStringBase64;
         object["isEnabled"] = document.getElementById("isEnabledCheckbox").checked;
+        object["content"] = CKEDITOR.instances['contentTextarea'].getData();
 
         if(object["parentId"] === "0"){
             // console.warn("parent id is 0")

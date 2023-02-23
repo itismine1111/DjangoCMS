@@ -114,7 +114,7 @@ $(document).ready(function () {
                         td_isEnabled.innerHTML = "&#10004;";
                     }
                     else{
-                        td_isEnabled.innerHTML = '&#10006;';
+                        td_isEnabled.innerHTML = '&#10060;';
                     }
                     
                     var td_sort_order_id = document.createElement("td");
