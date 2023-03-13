@@ -5,6 +5,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
+        // dataType: 'jsonp', // Notice! JSONP <-- P (lowercase)
         url: API_LIST_LINK_INFO_TREE_VIEW_URL,
         processData: false,
         beforeSend: function(xhr, status){

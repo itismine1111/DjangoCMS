@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-n(44-ce#kuc27m584lm3x!jw&3j*ho)z5n#rzqgf6vila9&l=u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*", "localhost", "192.168.1.10:9090"]
+ALLOWED_HOSTS = ["*", "localhost", "192.168.1.10:9090", "122.176.104.29:9090"]
 
 AUTH_USER_MODEL = 'app_accounts.MyUser'
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "crispy_forms",
     'widget_tweaks',
+    'corsheaders',
     # My Apps
     "app_accounts",
     "app_cms",
@@ -61,6 +62,7 @@ INSTALLED_APPS = [
 CRISPY_TEMPLATE_PACK = 'uni_form'
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -68,6 +70,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    
 ]
 
 ROOT_URLCONF = "src.urls"
@@ -174,3 +177,12 @@ CACHES = {
 LOGIN_URL = '/cms/accounts/login/'
 LOGIN_REDIRECT_URL = "/cms/admin/"
 LOGOUT_REDIRECT_URL = '/cms/accounts/login/'
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = (
+#   "http://localhost:8000",
+#   "http://122.176.104.29:9090",
+#   "http://192.168.1.10:9090",
+#   )

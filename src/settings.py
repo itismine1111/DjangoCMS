@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "crispy_forms",
     'widget_tweaks',
+    'corsheaders',
     # My Apps
     "app_accounts",
     "app_cms",
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "src.urls"
@@ -169,3 +171,11 @@ CACHES = {
 LOGIN_URL = '/cms/accounts/login/'
 LOGIN_REDIRECT_URL = "/cms/admin/"
 LOGOUT_REDIRECT_URL = '/cms/accounts/login/'
+
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+  "http://localhost:8000",
+  "http://122.176.104.29:9090",
+  "http://192.168.1.10:9090",
+)

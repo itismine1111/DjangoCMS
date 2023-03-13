@@ -101,6 +101,8 @@ $(document).ready(function () {
                         type: "DELETE",
                         url: API_BASE_URL_ADMIN + "linktype/",
                         data: json,
+                        crossDomain: true,
+                        dataType: 'jsonp',
                         processData: false,
                         headers: {
                             'Content-Type':'application/json'
